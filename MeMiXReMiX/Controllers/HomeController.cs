@@ -15,9 +15,8 @@ namespace MeMiXReMiX.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult MakeSongs()
         {
-            ViewData["Message"] = "Your application description page.";
 
             return View();
         }
