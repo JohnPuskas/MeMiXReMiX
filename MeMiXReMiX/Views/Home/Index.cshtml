@@ -28,7 +28,7 @@
             </td>
             <td>
                 <select id="bass-select" onchange="javascript:bassLoader2();">
-                    <option value="">--</option>
+                    <option value="music/Empty.mp3">--</option>
                     <option value="music/bass/Bass1.mp3">Bass1</option>
                     <option value="music/bass/Bass2.mp3">Bass2</option>
                     <option value="music/bass/Bass3.mp3">Bass3</option>
@@ -43,7 +43,7 @@
             <td><p>Synth</p></td>
             <td>
                 <select id="synth-select" onchange="javascript: synthLoader2();">
-                    <option value="">--</option>
+                    <option value="music/Empty.mp3">--</option>
                     <option value="music/synth/synth1.mp3">Synth1</option>
                     <option value="music/synth/synth2.mp3">Synth2</option>
                     <option value="music/synth/synth3.mp3">Synth3</option>
@@ -60,7 +60,7 @@
             <td><p>Drums</p></td>
             <td>
                 <select id="drums-select" onchange="javascript: drumLoader2();">
-                    <option value="--">--</option>
+                    <option value="music/Empty.mp3">--</option>
                     <option value="music/drums/Drums1.mp3">Drums1</option>
                     <option value="music/drums/Drums2.mp3">Drums2</option>
                     <option value="music/drums/Drums3.mp3">Drums3</option>
@@ -74,7 +74,7 @@
             <td><p>Glitch</p></td>
             <td>
                 <select id="glitch-select" onchange="javascript: glitchLoader2();">
-                    <option value="--">--</option>
+                    <option value="music/Empty.mp3">--</option>
                     <option value="music/glitch/glitch1.mp3">Glitch1</option>
                     <option value="music/glitch/glitch2.mp3">Glitch2</option>
                     <option value="music/glitch/glitch3.mp3">Glitch3</option>
@@ -247,7 +247,7 @@
                 getSound4.open("GET", glitchValue, true);
                 getSound4.responseType = "arraybuffer";
                 getSound4.onload = function () {
-                    audioCtx.decodeAudioData(getSound3.response, function (buffer) {
+                    audioCtx.decodeAudioData(getSound4.response, function (buffer) {
                         glitch = buffer;
                     });
                 }
