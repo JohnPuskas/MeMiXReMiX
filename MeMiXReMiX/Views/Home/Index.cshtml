@@ -29,10 +29,10 @@
             <td>
                 <select id="bass-select" onchange="javascript:bassLoader2();">
                     <option value="">--</option>
-                    <option value="music/Bass1.mp3">Bass1</option>
-                    <option value="music/Bass2.mp3">Bass2</option>
-                    <option value="music/Bass3.mp3">Bass3</option>
-                    <option value="music/Bass4.mp3">Bass4</option>
+                    <option value="music/bass/Bass1.mp3">Bass1</option>
+                    <option value="music/bass/Bass2.mp3">Bass2</option>
+                    <option value="music/bass/Bass3.mp3">Bass3</option>
+                    <option value="music/bass/Bass4.mp3">Bass4</option>
                 </select>
             </td>
             <td>
@@ -40,11 +40,16 @@
             </td>
         </tr>
         <tr>
-            <td><p>Keyboard</p></td>
+            <td><p>Synth</p></td>
             <td>
-                <select id="keys-select" onchange="javascript: keysLoader2();">
+                <select id="synth-select" onchange="javascript: synthLoader2();">
                     <option value="">--</option>
-                    <option value="music/Keys.mp3">Keys1</option>
+                    <option value="music/synth/synth1.mp3">Synth1</option>
+                    <option value="music/synth/synth2.mp3">Synth2</option>
+                    <option value="music/synth/synth3.mp3">Synth3</option>
+                    <option value="music/synth/synth4.mp3">Synth4</option>
+                    <option value="music/synth/synth5.mp3">Synth5</option>
+
                 </select>
             </td>
             <td>
@@ -56,7 +61,34 @@
             <td>
                 <select id="drums-select" onchange="javascript: drumLoader2();">
                     <option value="--">--</option>
-                    <option value="music/Drums.mp3">Drums1</option>
+                    <option value="music/drums/Drums1.mp3">Drums1</option>
+                    <option value="music/drums/Drums2.mp3">Drums2</option>
+                    <option value="music/drums/Drums3.mp3">Drums3</option>
+                    <option value="music/drums/Drums4.mp3">Drums4</option>
+                    <option value="music/drums/Drums5.mp3">Drums5</option>
+                    <option value="music/drums/Drums6.mp3">Drums6</option>
+
+                </select>
+            </td>
+        <tr>
+            <td><p>Glitch</p></td>
+            <td>
+                <select id="glitch-select" onchange="javascript: glitchLoader2();">
+                    <option value="--">--</option>
+                    <option value="music/glitch/glitch1.mp3">Glitch1</option>
+                    <option value="music/glitch/glitch2.mp3">Glitch2</option>
+                    <option value="music/glitch/glitch3.mp3">Glitch3</option>
+                    <option value="music/glitch/glitch4.mp3">Glitch4</option>
+                    <option value="music/glitch/glitch5.mp3">Glitch5</option>
+                    <option value="music/glitch/glitch6.mp3">Glitch6</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><p>Lead</p></td>
+            <td>
+                <select id="lead-select">
+                    <option value="--">--</option>
                 </select>
             </td>
             <td>
@@ -82,9 +114,10 @@
     <script type="text/javascript">
 
         var audioCtx = new AudioContext();
-        var keyboards;
+        var synth;
         var drums;
         var bass;
+        var glitch;
 
         function keysLoader() {
 
@@ -92,7 +125,7 @@
             var e = document.getElementById("keys-select");
             var keysValue = e.options[e.selectedIndex].value;
             if (keysValue === "") {
-
+                
             } else {
                 // Else get the Sound
                 var getSound1 = new XMLHttpRequest();
@@ -145,21 +178,21 @@
             getSound3.send();
         };
 
-        function keysLoader2() {
+        function synthLoader2() {
 
             // If no mp3 selected, do nothing
-            var e = document.getElementById("keys-select");
-            var keysValue = e.options[e.selectedIndex].value;
-            if (keysValue === "") {
+            var e = document.getElementById("synth-select");
+            var synthValue = e.options[e.selectedIndex].value;
+            if (synthValue === "") {
 
             } else {
                 // Else get the Sound
                 var getSound1 = new XMLHttpRequest();
-                getSound1.open("GET", keysValue, true);
+                getSound1.open("GET", synthValue, true);
                 getSound1.responseType = "arraybuffer";
                 getSound1.onload = function () {
                     audioCtx.decodeAudioData(getSound1.response, function (buffer) {
-                        keyboards = buffer;
+                        synth = buffer;
                     });
                 }
             };
@@ -203,6 +236,24 @@
             };
             getSound3.send();
         };
+
+        function glitchLoader2() {
+            var e = document.getElementById("glitch-select");
+            var glitchValue = e.options[e.selectedIndex].value;
+            if (glitchValue === "") {
+
+            } else {
+                var getSound4 = new XMLHttpRequest();
+                getSound4.open("GET", glitchValue, true);
+                getSound4.responseType = "arraybuffer";
+                getSound4.onload = function () {
+                    audioCtx.decodeAudioData(getSound3.response, function (buffer) {
+                        glitch = buffer;
+                    });
+                }
+            };
+            getSound4.send();
+        };
         var playButton = document.getElementById("play-song")
         count = 0;
 
@@ -216,7 +267,7 @@
 
                 // Plays tracks
                 var playTrack = audioCtx.createBufferSource();
-                playTrack.buffer = keyboards;
+                playTrack.buffer = synth;
                 playTrack.connect(audioCtx.destination);
                 playTrack.start(0);
 
@@ -230,6 +281,11 @@
                 playTrack3.connect(audioCtx.destination);
                 playTrack3.start(0);
 
+                var playTrack4 = audioCtx.createBufferSource();
+                playTrack4.buffer = glitch;
+                playTrack4.connect(audioCtx.destination);
+                playTrack4.start(0);
+
                 playButton.disabled = true;
             }
 
@@ -241,6 +297,7 @@
                 playTrack.stop();
                 playTrack2.stop();
                 playTrack3.stop();
+                playTrack4.stop();
 
                 playButton.disabled = false;
                 stopButton.disabled = true;
