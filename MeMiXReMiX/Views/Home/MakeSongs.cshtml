@@ -27,12 +27,12 @@
                 <p>Bass</p>
             </td>
             <td>
-                <select id="bass-select" onchange="javascript:bassLoader2();">
-                    <option value="">--</option>
-                    <option value="music/Bass1.mp3">Bass1</option>
-                    <option value="music/Bass2.mp3">Bass2</option>
-                    <option value="music/Bass3.mp3">Bass3</option>
-                    <option value="music/Bass4.mp3">Bass4</option>
+                <select id="bass-select" onchange="javascript: fileFinder(0, 'bass-select');">
+                    <option value="0">--</option>
+                    <option value="1">Bass1</option>
+                    <option value="2">Bass2</option>
+                    <option value="3">Bass3</option>
+                    <option value="4">Bass4</option>
                 </select>
             </td>
             <td>
@@ -40,11 +40,16 @@
             </td>
         </tr>
         <tr>
-            <td><p>Keyboard</p></td>
+            <td><p>Synth</p></td>
             <td>
-                <select id="keys-select" onchange="javascript: keysLoader2();">
-                    <option value="">--</option>
-                    <option value="music/Keys.mp3">Keys1</option>
+                <select id="synth-select" onchange="javascript: fileFinder(1, 'synth-select');">
+                    <option value="0">--</option>
+                    <option value="1">Synth1</option>
+                    <option value="2">Synth2</option>
+                    <option value="3">Synth3</option>
+                    <option value="4">Synth4</option>
+                    <option value="5">Synth5</option>
+
                 </select>
             </td>
             <td>
@@ -54,9 +59,36 @@
         <tr>
             <td><p>Drums</p></td>
             <td>
-                <select id="drums-select" onchange="javascript: drumLoader2();">
+                <select id="drums-select" onchange="javascript: fileFinder(2, 'drums-select');">
+                    <option value="0">--</option>
+                    <option value="1">Drums1</option>
+                    <option value="2">Drums2</option>
+                    <option value="3">Drums3</option>
+                    <option value="4">Drums4</option>
+                    <option value="5">Drums5</option>
+                    <option value="6">Drums6</option>
+
+                </select>
+            </td>
+        <tr>
+            <td><p>Glitch</p></td>
+            <td>
+                <select id="glitch-select" onchange="javascript: fileFinder(3, 'glitch-select');">
+                    <option value="0">--</option>
+                    <option value="1">Glitch1</option>
+                    <option value="2">Glitch2</option>
+                    <option value="3">Glitch3</option>
+                    <option value="4">Glitch4</option>
+                    <option value="5">Glitch5</option>
+                    <option value="6">Glitch6</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td><p>Lead</p></td>
+            <td>
+                <select id="lead-select">
                     <option value="--">--</option>
-                    <option value="music/Drums.mp3">Drums1</option>
                 </select>
             </td>
             <td>
@@ -81,188 +113,107 @@
 
     <script type="text/javascript">
 
-            var audioCtx = new AudioContext();
-            var keyboards;
-            var drums;
-            var bass;
+        var audioCtx = new AudioContext();
+        var synth;
+        var drums;
+        var bass;
+        var glitch;
 
-            function keysLoader() {
+        var bassURL = "/music/bass/bass";
+        var synthURL = "/music/synth/synth";
+        var drumURL = "/music/drums/drums";
+        var glitchURL = "/music/glitch/glitch";
 
-                // If no mp3 selected, do nothing
-                var e = document.getElementById("keys-select");
-                var keysValue = e.options[e.selectedIndex].value;
-                if (keysValue === "") {
+        var inst = [bassURL, synthURL, drumURL, glitchURL];
 
-                } else {
-                    // Else get the Sound
-                    var getSound1 = new XMLHttpRequest();
-                    getSound1.open("GET", keysValue, true);
-                    getSound1.responseType = "arraybuffer";
-                    getSound1.onload = function () {
-                        audioCtx.decodeAudioData(getSound1.response, function (buffer) {
-                            keyboards = buffer;
-                        });
-                    }
-                };
-                    getSound1.send();
-            };
+        function fileFinder(instrumentNumber, elementID) {
+            var e = document.getElementById(elementID);
+            pickNumber = e.options[e.selectedIndex].value;
 
-                function drumLoader() {
-                    var e = document.getElementById("drums-select");
-                    var drumValue = e.options[e.selectedIndex].value;
-                    if (drumValue === "--") {
+            var fileURL = inst[instrumentNumber] + pickNumber + ".mp3";
 
-                    } else {
-                        var getSound2 = new XMLHttpRequest();
-                        getSound2.open("GET", drumValue, true);
-                        getSound2.responseType = "arraybuffer";
-                        getSound2.onload = function () {
-                            audioCtx.decodeAudioData(getSound2.response, function (buffer) {
+            caseNumber = instrumentNumber + 1;
+            
+                var getAudio = new XMLHttpRequest();
+                getAudio.open("GET", fileURL, true);
+                getAudio.responseType = "arraybuffer";
+                getAudio.onload = function () {
+                    audioCtx.decodeAudioData(getAudio.response, function (buffer) {
+                        switch (caseNumber) {
+                            case 1:
+                                bass = buffer;
+                                break;
+                            case 2:
+                                synth = buffer;
+                                break;
+                            case 3:
                                 drums = buffer;
-                            });
+                                break;
+                            case 4:
+                                glitch = buffer;
                         }
-                    };
-                        getSound2.send();
-                };
+                    });
+                    };            
+                getAudio.send();
+            
+        };
 
-            //var loadBass = document.querySelector("load-bass");
 
-            function bassLoader() {
-                var e = document.getElementById("bass-select");
-                var bassValue = e.options[e.selectedIndex].value;
-                if (bassValue === "") {
-    // TODO figure out how to unload MP3s when '--' is re-selected in the drop-down
-                } else {
-                var getSound3 = new XMLHttpRequest();
-                getSound3.open("GET", bassValue, true);
-                getSound3.responseType = "arraybuffer";
-                    getSound3.onload = function () {
-                        audioCtx.decodeAudioData(getSound3.response, function (buffer) {
-                            bass = buffer;
-                        });
-                    }
-                };
-                getSound3.send();
-            };
+        var playButton = document.getElementById("play-song")
+        //count = 0;
 
-            function keysLoader2() {
+        playButton.addEventListener('click', function () {
 
-                // If no mp3 selected, do nothing
-                var e = document.getElementById("keys-select");
-                var keysValue = e.options[e.selectedIndex].value;
-                if (keysValue === "") {
+            // Eliminates 2 instances of song playing at same time upon multiple 'play' clicks
+            //playButton.onclick = function () {
+            //    count += 1;
+            //}
+            //if (count < 1) {
 
-                } else {
-                    // Else get the Sound
-                    var getSound1 = new XMLHttpRequest();
-                    getSound1.open("GET", keysValue, true);
-                    getSound1.responseType = "arraybuffer";
-                    getSound1.onload = function () {
-                        audioCtx.decodeAudioData(getSound1.response, function (buffer) {
-                            keyboards = buffer;
-                        });
-                    }
-                };
-                getSound1.send();
-            };
+                // Plays tracks
+                var playTrack = audioCtx.createBufferSource();
+                playTrack.buffer = bass;
+                playTrack.connect(audioCtx.destination);
+                playTrack.start(0);
 
-            function drumLoader2() {
-                var e = document.getElementById("drums-select");
-                var drumValue = e.options[e.selectedIndex].value;
-                if (drumValue === "--") {
+                var playTrack2 = audioCtx.createBufferSource();
+                playTrack2.buffer = synth;
+                playTrack2.connect(audioCtx.destination);
+                playTrack2.start(0);
 
-                } else {
-                    var getSound2 = new XMLHttpRequest();
-                    getSound2.open("GET", drumValue, true);
-                    getSound2.responseType = "arraybuffer";
-                    getSound2.onload = function () {
-                        audioCtx.decodeAudioData(getSound2.response, function (buffer) {
-                            drums = buffer;
-                        });
-                    }
-                };
-                getSound2.send();
-            };
+                var playTrack3 = audioCtx.createBufferSource();
+                playTrack3.buffer = drums;
+                playTrack3.connect(audioCtx.destination);
+                playTrack3.start(0);
 
-            //var loadBass = document.querySelector("load-bass");
+                var playTrack4 = audioCtx.createBufferSource();
+                playTrack4.buffer = glitch;
+                playTrack4.connect(audioCtx.destination);
+                playTrack4.start(0);
 
-            function bassLoader2() {
-                var e = document.getElementById("bass-select");
-                var bassValue = e.options[e.selectedIndex].value;
-                if (bassValue === "") {
+                playButton.disabled = true;
+            //}
 
-                } else {
-                    var getSound3 = new XMLHttpRequest();
-                    getSound3.open("GET", bassValue, true);
-                    getSound3.responseType = "arraybuffer";
-                    getSound3.onload = function () {
-                        audioCtx.decodeAudioData(getSound3.response, function (buffer) {
-                            bass = buffer;
-                        });
-                    }
-                };
-                getSound3.send();
-            };
-            var playButton = document.getElementById("play-song")
-            count = 0;
+            // Stop playback & reset 'Play' button counter to 0 to allow song to be started over
+            var stopButton = document.getElementById("stop-song");
+            stopButton.disabled = false;
 
-            playButton.addEventListener('click', function () {
+            stopButton.addEventListener('click', function () {
+                playTrack.stop();
+                playTrack2.stop();
+                playTrack3.stop();
+                playTrack4.stop();
 
-               // Eliminates 2 instances of song playing at same time upon multiple 'play' clicks
-                playButton.onclick = function () {
-                    count += 1;
-                }
-                if (count < 1) {
+                playButton.disabled = false;
+                stopButton.disabled = true;
 
-                    // Plays tracks
-                    var playTrack = audioCtx.createBufferSource();
-                    playTrack.buffer = keyboards;
-                    playTrack.connect(audioCtx.destination);
-                    playTrack.start(0);
-
-                    var playTrack2 = audioCtx.createBufferSource();
-                    playTrack2.buffer = drums;
-                    playTrack2.connect(audioCtx.destination);
-                    playTrack2.start(0);
-
-                    var playTrack3 = audioCtx.createBufferSource();
-                    playTrack3.buffer = bass;
-                    playTrack3.connect(audioCtx.destination);
-                    playTrack3.start(0);
-
-                    playButton.disabled = true;
-                }
-
-                // Stop playback & reset 'Play' button counter to 0 to allow song to be started over
-                var stopButton = document.getElementById("stop-song");
-                stopButton.disabled = false;
-
-                stopButton.addEventListener('click', function () {
-                    playTrack.stop();
-                    playTrack2.stop();
-                    playTrack3.stop();
-
-                    playButton.disabled = false;
-                    stopButton.disabled = true;
-
-                    count = 0;
-
-                });
+                //count = 0;
 
             });
 
-            //function (dropContext) {
-            //    playTrack.disconnect();
-            //    playTrack2.disconnect();
-            //    playTrack3.disconnect();
-            //    audioCtx.close();
-
-            //};
-
-    
+        });
 
     </script>
-
 
 </body>
 </html>
