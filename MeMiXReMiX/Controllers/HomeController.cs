@@ -5,11 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MeMiXReMiX.Models;
+using MeMiXReMiX.ViewModels;
+using MeMiXReMiX.Data;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace MeMiXReMiX.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext context;
+
+        public HomeController(ApplicationDbContext dbContext)
+        {
+            context = dbContext;
+        }
+
+
         public IActionResult Index()
         {
             return View();
@@ -17,9 +29,11 @@ namespace MeMiXReMiX.Controllers
 
         public IActionResult MakeSongs()
         {
-
-            return View();
+            AddSongViewModel addSongViewModel = new AddSongViewModel();
+            return View(addSongViewModel);
         }
+
+
 
         public IActionResult Contact()
         {

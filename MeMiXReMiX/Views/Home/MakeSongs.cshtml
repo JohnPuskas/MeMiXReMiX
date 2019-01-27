@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@model MeMiXReMiX.ViewModels.AddSongViewModel
+
+<!DOCTYPE html>
 <html>
 <head>
     <title>MeMiX ReMiX</title>
@@ -10,13 +12,9 @@
 <body>
     <h1>MeMiX ReMiX</h1>
 
-    @*<audio controls>
-            <source src="~/music/Keys.mp3" type="audio/mp3" />
-        </audio>*@
     <p> <h5>HOW IT WORKS:</h5></p>
     <ol>
         <li>Make an audio clip selection for each instrument</li>
-        @*<li>Press the 'Load' button for each instrument to get it ready to play</li>*@
         <li>Click 'Play your song' and you will hear your results</li>
         <li>Repeat steps 1 & 2 you much as you like</li>
         <li>Save it when you have created your masterpiece</li>
@@ -27,7 +25,7 @@
                 <p>Bass</p>
             </td>
             <td>
-                <select id="bass-select" onchange="javascript: pickedAudio(0, 'bass-select');">
+                <select id="bass-select" class="selectors" onchange="javascript: pickedAudio(0, 'bass-select');">
                     <option value="0">--</option>
                     <option value="1">Bass1</option>
                     <option value="2">Bass2</option>
@@ -42,7 +40,7 @@
         <tr>
             <td><p>Synth</p></td>
             <td>
-                <select id="synth-select" onchange="javascript: pickedAudio(1, 'synth-select');">
+                <select id="synth-select" class="selectors" onchange="javascript: pickedAudio(1, 'synth-select');">
                     <option value="0">--</option>
                     <option value="1">Synth1</option>
                     <option value="2">Synth2</option>
@@ -59,7 +57,7 @@
         <tr>
             <td><p>Drums</p></td>
             <td>
-                <select id="drums-select" onchange="javascript: pickedAudio(2, 'drums-select');">
+                <select id="drums-select" class="selectors" onchange="javascript: pickedAudio(2, 'drums-select');">
                     <option value="0">--</option>
                     <option value="1">Drums1</option>
                     <option value="2">Drums2</option>
@@ -73,7 +71,7 @@
         <tr>
             <td><p>Glitch</p></td>
             <td>
-                <select id="glitch-select" onchange="javascript: pickedAudio(3, 'glitch-select');">
+                <select id="glitch-select" class="selectors" onchange="javascript: pickedAudio(3, 'glitch-select');">
                     <option value="0">--</option>
                     <option value="1">Glitch1</option>
                     <option value="2">Glitch2</option>
@@ -107,8 +105,21 @@
 
     <p><h4>Like what you've made? Give it a title and save it for later!</h4></p>
 
-    <input value="feature coming soon" type="text" />
-    <button type="submit">Save it!!!</button>
+    <form asp-controller="HomeController" asp-action="AddSong" method="post">
+        <div class="form-group">
+            <label asp-for="Title"></label>
+            <input class="form-control" asp-for="Title" />
+            <span asp-validation-for="Title"></span>
+        </div>
+        <div class="form-group">
+            <input id="digits" class="form-control" type="hidden" asp-for="FilePointer"/>
+            <span asp-validation-for="FilePointer"></span>
+        </div>
+
+        <input id="actual-submit" type="submit" hidden="hidden">
+    </form>
+
+    <button id="fake-submit" onclick="javascript: collectSelections();">Save it!!!</button>
 
 
     <script type="text/javascript">
@@ -216,6 +227,23 @@
             });
 
         });
+
+        function collectSelections() {
+
+            var fileDigits = document.getElementById("digits");
+            fileDigits.value = "A";
+            //for
+            
+            var insts = document.getElementsByClassName("selectors");
+            //instValue = e.options[e.selectedIndex].value;
+            for (i = 0; i < inst.length; i++) {
+                instValue = insts[i].value;
+                fileDigits.value = fileDigits.value + instValue;
+
+            }
+
+
+        }
 
     </script>
 
