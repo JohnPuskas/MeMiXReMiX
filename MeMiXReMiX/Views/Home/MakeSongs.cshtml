@@ -27,7 +27,7 @@
                 <p>Bass</p>
             </td>
             <td>
-                <select id="bass-select" onchange="javascript: fileFinder(0, 'bass-select');">
+                <select id="bass-select" onchange="javascript: pickedAudio(0, 'bass-select');">
                     <option value="0">--</option>
                     <option value="1">Bass1</option>
                     <option value="2">Bass2</option>
@@ -42,7 +42,7 @@
         <tr>
             <td><p>Synth</p></td>
             <td>
-                <select id="synth-select" onchange="javascript: fileFinder(1, 'synth-select');">
+                <select id="synth-select" onchange="javascript: pickedAudio(1, 'synth-select');">
                     <option value="0">--</option>
                     <option value="1">Synth1</option>
                     <option value="2">Synth2</option>
@@ -59,7 +59,7 @@
         <tr>
             <td><p>Drums</p></td>
             <td>
-                <select id="drums-select" onchange="javascript: fileFinder(2, 'drums-select');">
+                <select id="drums-select" onchange="javascript: pickedAudio(2, 'drums-select');">
                     <option value="0">--</option>
                     <option value="1">Drums1</option>
                     <option value="2">Drums2</option>
@@ -73,7 +73,7 @@
         <tr>
             <td><p>Glitch</p></td>
             <td>
-                <select id="glitch-select" onchange="javascript: fileFinder(3, 'glitch-select');">
+                <select id="glitch-select" onchange="javascript: pickedAudio(3, 'glitch-select');">
                     <option value="0">--</option>
                     <option value="1">Glitch1</option>
                     <option value="2">Glitch2</option>
@@ -114,10 +114,11 @@
     <script type="text/javascript">
 
         var audioCtx = new AudioContext();
-        var synth;
-        var drums;
-        var bass;
-        var glitch;
+        var inst1;
+        var inst2;
+        var inst3;
+        var inst4;
+        var inst5;
 
         var bassURL = "/music/bass/bass";
         var synthURL = "/music/synth/synth";
@@ -126,75 +127,81 @@
 
         var inst = [bassURL, synthURL, drumURL, glitchURL];
 
-        function fileFinder(instrumentNumber, elementID) {
-            var e = document.getElementById(elementID);
-            pickNumber = e.options[e.selectedIndex].value;
+
+        // Gets the appropriate file based on the number associated with the instrument type and
+        // the number associated with the audio clip selected by the user for that instrument type.
+        function fileRetriever(instrumentNumber, pickNumber) {
 
             var fileURL = inst[instrumentNumber] + pickNumber + ".mp3";
 
             caseNumber = instrumentNumber + 1;
             
-                var getAudio = new XMLHttpRequest();
-                getAudio.open("GET", fileURL, true);
-                getAudio.responseType = "arraybuffer";
-                getAudio.onload = function () {
-                    audioCtx.decodeAudioData(getAudio.response, function (buffer) {
-                        switch (caseNumber) {
-                            case 1:
-                                bass = buffer;
-                                break;
-                            case 2:
-                                synth = buffer;
-                                break;
-                            case 3:
-                                drums = buffer;
-                                break;
-                            case 4:
-                                glitch = buffer;
-                        }
-                    });
-                    };            
-                getAudio.send();
+            var getAudio = new XMLHttpRequest();
+            getAudio.open("GET", fileURL, true);
+            getAudio.responseType = "arraybuffer";
+            getAudio.onload = function () {
+                audioCtx.decodeAudioData(getAudio.response, function (buffer) {
+                    switch (caseNumber) {
+                        case 1:
+                            inst1 = buffer;
+                            break;
+                        case 2:
+                            inst2 = buffer;
+                            break;
+                        case 3:
+                            inst3 = buffer;
+                            break;
+                        case 4:
+                            inst4 = buffer;
+                            break;
+                        case 5:
+                            inst5 = buffer;
+                    }
+                });
+                };            
+            getAudio.send();
             
         };
 
+        // Gets the necessary data to be used for the fileRetriever function.
+        // 'instNum' is hard-coded in the HTML for each instrument type.
+        // 'pickedFile' is the int value associated with the User selection from the instrument type drop-down.
+        // Then fileRetriever function is called to get the appropriate file fo playback
+        function pickedAudio(instNum, elementID) {
+            var e = document.getElementById(elementID);
+            pickedFile = e.options[e.selectedIndex].value;
+
+            fileRetriever(instNum, pickedFile);
+        }
+
 
         var playButton = document.getElementById("play-song")
-        //count = 0;
 
         playButton.addEventListener('click', function () {
+            
+            var playTrack = audioCtx.createBufferSource();
+            playTrack.buffer = inst1;
+            playTrack.connect(audioCtx.destination);
+            playTrack.start(0);
 
-            // Eliminates 2 instances of song playing at same time upon multiple 'play' clicks
-            //playButton.onclick = function () {
-            //    count += 1;
-            //}
-            //if (count < 1) {
+            var playTrack2 = audioCtx.createBufferSource();
+            playTrack2.buffer = inst2;
+            playTrack2.connect(audioCtx.destination);
+            playTrack2.start(0);
 
-                // Plays tracks
-                var playTrack = audioCtx.createBufferSource();
-                playTrack.buffer = bass;
-                playTrack.connect(audioCtx.destination);
-                playTrack.start(0);
+            var playTrack3 = audioCtx.createBufferSource();
+            playTrack3.buffer = inst3;
+            playTrack3.connect(audioCtx.destination);
+            playTrack3.start(0);
 
-                var playTrack2 = audioCtx.createBufferSource();
-                playTrack2.buffer = synth;
-                playTrack2.connect(audioCtx.destination);
-                playTrack2.start(0);
+            var playTrack4 = audioCtx.createBufferSource();
+            playTrack4.buffer = inst4;
+            playTrack4.connect(audioCtx.destination);
+            playTrack4.start(0);
 
-                var playTrack3 = audioCtx.createBufferSource();
-                playTrack3.buffer = drums;
-                playTrack3.connect(audioCtx.destination);
-                playTrack3.start(0);
+            playButton.disabled = true;
 
-                var playTrack4 = audioCtx.createBufferSource();
-                playTrack4.buffer = glitch;
-                playTrack4.connect(audioCtx.destination);
-                playTrack4.start(0);
 
-                playButton.disabled = true;
-            //}
-
-            // Stop playback & reset 'Play' button counter to 0 to allow song to be started over
             var stopButton = document.getElementById("stop-song");
             stopButton.disabled = false;
 
@@ -206,9 +213,6 @@
 
                 playButton.disabled = false;
                 stopButton.disabled = true;
-
-                //count = 0;
-
             });
 
         });
