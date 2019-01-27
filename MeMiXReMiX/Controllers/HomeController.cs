@@ -29,11 +29,28 @@ namespace MeMiXReMiX.Controllers
 
         public IActionResult MakeSongs()
         {
-            AddSongViewModel addSongViewModel = new AddSongViewModel();
-            return View(addSongViewModel);
+            return View();
         }
 
+        [HttpPost]
+        public IActionResult MakeSongs(AddSongViewModel addSongViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Song newSong = new Song
+                {
+                    Title = addSongViewModel.Title,
+                    FilePointer = addSongViewModel.FilePointer
+                };
 
+                context.Songs.Add(newSong);
+                context.SaveChanges();
+
+                return View();
+            }
+
+            return View(addSongViewModel);
+        }
 
         public IActionResult Contact()
         {

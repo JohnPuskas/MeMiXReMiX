@@ -105,7 +105,7 @@
 
     <p><h4>Like what you've made? Give it a title and save it for later!</h4></p>
 
-    <form asp-controller="HomeController" asp-action="AddSong" method="post">
+    <form asp-controller="Home" asp-action="MakeSongs" method="post">
         <div class="form-group">
             <label asp-for="Title"></label>
             <input class="form-control" asp-for="Title" />
@@ -174,10 +174,12 @@
             
         };
 
-        // Gets the necessary data to be used for the fileRetriever function.
-        // 'instNum' is hard-coded in the HTML for each instrument type.
-        // 'pickedFile' is the int value associated with the User selection from the instrument type drop-down.
-        // Then fileRetriever function is called to get the appropriate file fo playback
+        /*
+         Gets the necessary data to be used for the fileRetriever function.
+         'instNum' is hard-coded in the HTML for each instrument type.
+         'pickedFile' is the int value associated with the User selection from the instrument type drop-down.
+         Then fileRetriever function is called to get the appropriate file fo playback
+        */
         function pickedAudio(instNum, elementID) {
             var e = document.getElementById(elementID);
             pickedFile = e.options[e.selectedIndex].value;
@@ -228,20 +230,40 @@
 
         });
 
+
+        // TODO fix bug that removes selections from drop-downs upon 'submit' error (Even though the selections are still ready for submission)
+  /*      window.onload = retainSelections();
+
+        function retainSelections() {
+            var fileDigits = document.getElementById("digits");
+            var insts = document.getElementsByClassName("selectors");
+
+            for (i = 1; i < fileDigits.length; i++) {
+                inst = insts[i - 1];
+                inst.value = fileDigits[i];
+            };
+        }
+*/
+        ///////////////
+
+
+        /*
+         Upon clicking 'submit', takes all of the numerical values of User selections and
+         puts them in string to be stored in DB. THEN submits the form.
+        */
         function collectSelections() {
 
             var fileDigits = document.getElementById("digits");
             fileDigits.value = "A";
-            //for
             
             var insts = document.getElementsByClassName("selectors");
-            //instValue = e.options[e.selectedIndex].value;
             for (i = 0; i < inst.length; i++) {
                 instValue = insts[i].value;
                 fileDigits.value = fileDigits.value + instValue;
 
             }
 
+            document.getElementById("actual-submit").click();
 
         }
 
