@@ -1,0 +1,90 @@
+﻿@model IList<MeMiXReMiX.Models.Song>
+@using System.Linq;
+
+
+@{
+    ViewData["Title"] = "Saved Songs";
+}
+
+<h1>Saved Songs</h1>
+
+<ul>
+    @foreach (var song in Model)
+    {
+        <li class="songs" value="42">
+            <p>@song.Title</p>
+            <button class="play" id="@song.ID" onclick="javascript: digitFinder('@song.FilePointer');">Play</button>
+            <button class="stop" disabled>Stop</button>
+        </li>
+    }
+</ul>
+
+<form asp-controller="Home" asp-action="MakeSongs" method="get">
+    <button>Go Create More Songs</button>
+</form>
+
+<script type="text/javascript">
+
+    var audioCtx = new AudioContext();
+    //initialize variables to be used upon play click
+    var inst1;
+    var inst2;
+    var inst3;
+    var inst4;
+    var inst5;
+
+    //urls to be concatenated into full file paths/name
+    var bassURL = "/music/bass/bass";
+    var synthURL = "/music/synth/synth";
+    var drumURL = "/music/drums/drums";
+    var glitchURL = "/music/glitch/glitch";
+
+    var inst = [bassURL, synthURL, drumURL, glitchURL];
+
+
+   // Gets the FilePointer digits of the song to plug into fileRetriever function
+    function digitFinder(fP) {
+
+        for (i = 0; i < fP.length; i++) {
+            instrumentNum = i;
+            fileNum = fP[i];
+
+            fileRetriever(instrumentNum, fileNum);
+        }
+    };
+
+
+    // TODO Put fileRetriever function in a helper file. And place ALL of this js in its own file.
+    function fileRetriever(instrumentNumber, pickNumber) {
+
+        var fileURL = inst[instrumentNumber] + pickNumber + ".mp3";
+
+        caseNumber = instrumentNumber + 1;
+
+        var getAudio = new XMLHttpRequest();
+        getAudio.open("GET", fileURL, true);
+        getAudio.responseType = "arraybuffer";
+        getAudio.onload = function () {
+            audioCtx.decodeAudioData(getAudio.response, function (buffer) {
+                switch (caseNumber) {
+                    case 1:
+                        inst1 = buffer;
+                        break;
+                    case 2:
+                        inst2 = buffer;
+                        break;
+                    case 3:
+                        inst3 = buffer;
+                        break;
+                    case 4:
+                        inst4 = buffer;
+                        break;
+                    case 5:
+                        inst5 = buffer;
+                }
+            });
+        };
+        getAudio.send();
+
+    };
+</script>

@@ -52,11 +52,11 @@ namespace MeMiXReMiX.Controllers
             return View(addSongViewModel);
         }
 
-        public IActionResult Contact()
+        public IActionResult ViewSongs()
         {
-            ViewData["Message"] = "Your contact page.";
+            List<Song> songs = context.Songs.ToList();
 
-            return View();
+            return View(songs);
         }
 
         public IActionResult Privacy()
