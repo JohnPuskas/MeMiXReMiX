@@ -32,6 +32,7 @@
     var inst3;
     var inst4;
     var inst5;
+    var instrument;
 
     //urls to be concatenated into full file paths/name
     var bassURL = "/music/bass/bass";
@@ -66,22 +67,15 @@
         getAudio.responseType = "arraybuffer";
         getAudio.onload = function () {
             audioCtx.decodeAudioData(getAudio.response, function (buffer) {
-                switch (caseNumber) {
-                    case 1:
-                        inst1 = buffer;
-                        break;
-                    case 2:
-                        inst2 = buffer;
-                        break;
-                    case 3:
-                        inst3 = buffer;
-                        break;
-                    case 4:
-                        inst4 = buffer;
-                        break;
-                    case 5:
-                        inst5 = buffer;
-                }
+
+                instrument = buffer;
+
+                var playTrack = audioCtx.createBufferSource();
+                playTrack.buffer = instrument;
+                playTrack.connect(audioCtx.destination);
+                playTrack.loop = true;
+                playTrack.start(0);                
+
             });
         };
         getAudio.send();
