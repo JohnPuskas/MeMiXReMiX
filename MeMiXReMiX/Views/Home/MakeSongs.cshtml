@@ -200,21 +200,25 @@
             var playTrack = audioCtx.createBufferSource();
             playTrack.buffer = inst1;
             playTrack.connect(audioCtx.destination);
+            playTrack.loop = true;
             playTrack.start(0);
 
             var playTrack2 = audioCtx.createBufferSource();
             playTrack2.buffer = inst2;
             playTrack2.connect(audioCtx.destination);
+            playTrack2.loop = true;
             playTrack2.start(0);
 
             var playTrack3 = audioCtx.createBufferSource();
             playTrack3.buffer = inst3;
             playTrack3.connect(audioCtx.destination);
+            playTrack3.loop = true;
             playTrack3.start(0);
 
             var playTrack4 = audioCtx.createBufferSource();
             playTrack4.buffer = inst4;
             playTrack4.connect(audioCtx.destination);
+            playTrack4.loop = true;
             playTrack4.start(0);
 
             playButton.disabled = true;

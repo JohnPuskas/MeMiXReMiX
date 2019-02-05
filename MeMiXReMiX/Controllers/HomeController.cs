@@ -46,7 +46,7 @@ namespace MeMiXReMiX.Controllers
                 context.Songs.Add(newSong);
                 context.SaveChanges();
 
-                return View();
+                return Redirect("/Home/ViewSongs");
             }
 
             return View(addSongViewModel);
