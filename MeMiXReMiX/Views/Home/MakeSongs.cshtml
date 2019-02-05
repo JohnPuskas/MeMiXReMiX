@@ -108,7 +108,7 @@
     <form asp-controller="Home" asp-action="MakeSongs" method="post">
         <div class="form-group">
             <label asp-for="Title"></label>
-            <input class="form-control" asp-for="Title" />
+            <input id="title" class="form-control" asp-for="Title" />
             <span asp-validation-for="Title"></span>
         </div>
         <div class="form-group">
@@ -258,18 +258,26 @@
         */
         function collectSelections() {
 
-            var fileDigits = document.getElementById("digits");
-            fileDigits.value = "";
-            
-            var insts = document.getElementsByClassName("selectors");
-            for (i = 0; i < inst.length; i++) {
-                instValue = insts[i].value;
-                fileDigits.value = fileDigits.value + instValue;
+            var songTitle = document.getElementById('title');
 
-            }
+            if (songTitle.value == '') {
 
-            document.getElementById("actual-submit").click();
+                alert("Oops! Looks like your song needs a title.")
 
+            } else {
+
+                var fileDigits = document.getElementById("digits");
+                fileDigits.value = "";
+
+                var insts = document.getElementsByClassName("selectors");
+                for (i = 0; i < inst.length; i++) {
+                    instValue = insts[i].value;
+                    fileDigits.value = fileDigits.value + instValue;
+
+                }
+
+                document.getElementById("actual-submit").click();
+            };
         }
 
     </script>
