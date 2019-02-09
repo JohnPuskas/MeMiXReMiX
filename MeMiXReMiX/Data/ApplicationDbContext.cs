@@ -7,7 +7,7 @@ using MeMiXReMiX.Models;
 
 namespace MeMiXReMiX.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Song> Songs { get; set; }
 
