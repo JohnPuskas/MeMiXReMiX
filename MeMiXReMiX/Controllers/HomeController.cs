@@ -8,7 +8,7 @@ using MeMiXReMiX.Models;
 using MeMiXReMiX.ViewModels;
 using MeMiXReMiX.Data;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace MeMiXReMiX.Controllers
 {
@@ -27,11 +27,13 @@ namespace MeMiXReMiX.Controllers
             return View();
         }
 
+        [Authorize]
         public IActionResult MakeSongs()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult MakeSongs(AddSongViewModel addSongViewModel)
         {
@@ -52,6 +54,7 @@ namespace MeMiXReMiX.Controllers
             return View(addSongViewModel);
         }
 
+        [Authorize]
         public IActionResult ViewSongs()
         {
             List<Song> songs = context.Songs.ToList();
