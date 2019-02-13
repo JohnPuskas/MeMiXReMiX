@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -33,7 +36,7 @@
                     @*<li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>*@
                     <li><a asp-area="" asp-controller="Home" asp-action="MakeSongs">Make Songs</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="ViewSongs">See All User's Songs</a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="ViewUserSongs">See Your Songs</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="ViewUserSongs" asp-route-username=@UserManager.GetUserName(User)>See Your Songs</a></li>
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
