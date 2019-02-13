@@ -42,7 +42,9 @@ namespace MeMiXReMiX.Controllers
                 Song newSong = new Song
                 {
                     Title = addSongViewModel.Title,
-                    FilePointer = addSongViewModel.FilePointer
+                    FilePointer = addSongViewModel.FilePointer,
+                    ApplicationUserUserName = addSongViewModel.ApplicationsUserUserName,
+                    ApplicationUserID = addSongViewModel.ApplicationUserID
                 };
 
                 context.Songs.Add(newSong);

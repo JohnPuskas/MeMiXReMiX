@@ -1,4 +1,6 @@
 ﻿@model MeMiXReMiX.ViewModels.AddSongViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
 
 <!DOCTYPE html>
 <html>
@@ -112,8 +114,16 @@
             <span asp-validation-for="Title"></span>
         </div>
         <div class="form-group">
-            <input id="digits" class="form-control" type="hidden" asp-for="FilePointer"/>
+            <input id="digits" class="form-control" type="hidden" asp-for="FilePointer" />
             <span asp-validation-for="FilePointer"></span>
+        </div>
+        <div class="form-group">
+            <input id="appUserName" class="form-control" type="hidden" asp-for="ApplicationsUserUserName" />
+            <span asp-validation-for="ApplicationsUserUserName"></span>
+        </div>
+        <div class="form-group">
+            <input id="appUserID" class="form-control" type="hidden" asp-for="ApplicationUserID" />
+            <span asp-validation-for="ApplicationUserID"></span>
         </div>
 
         <input id="actual-submit" type="submit" hidden="hidden">
@@ -122,8 +132,8 @@
     <button id="fake-submit" onclick="javascript: collectSelections();">Save it!!!</button>
 
 
-    <form asp-controller="Home" asp-action="ViewSongs" method="get">    
-        <button >See Saved Songs</button>
+    <form asp-controller="Home" asp-action="ViewSongs" method="get">
+        <button>See Saved Songs</button>
     </form>
 
 
@@ -151,7 +161,7 @@
             var fileURL = inst[instrumentNumber] + pickNumber + ".mp3";
 
             caseNumber = instrumentNumber + 1;
-            
+
             var getAudio = new XMLHttpRequest();
             getAudio.open("GET", fileURL, true);
             getAudio.responseType = "arraybuffer";
@@ -174,11 +184,12 @@
                             inst5 = buffer;
                     }
                 });
-                };            
+            };
             getAudio.send();
-            
+
         };
 
+        var pickedFile;
         /*
          Gets the necessary data to be used for the fileRetriever function.
          'instNum' is hard-coded in the HTML for each instrument type.
@@ -196,7 +207,7 @@
         var playButton = document.getElementById("play-song")
 
         playButton.addEventListener('click', function () {
-            
+
             var playTrack = audioCtx.createBufferSource();
             playTrack.buffer = inst1;
             playTrack.connect(audioCtx.destination);
@@ -241,18 +252,18 @@
 
 
         // TODO fix bug that removes selections from drop-downs upon 'submit' error (Even though the selections are still ready for submission)
-  /*      window.onload = retainSelections();
+        /*      window.onload = retainSelections();
 
-        function retainSelections() {
-            var fileDigits = document.getElementById("digits");
-            var insts = document.getElementsByClassName("selectors");
+              function retainSelections() {
+                  var fileDigits = document.getElementById("digits");
+                  var insts = document.getElementsByClassName("selectors");
 
-            for (i = 1; i < fileDigits.length; i++) {
-                inst = insts[i - 1];
-                inst.value = fileDigits[i];
-            };
-        }
-*/
+                  for (i = 1; i < fileDigits.length; i++) {
+                      inst = insts[i - 1];
+                      inst.value = fileDigits[i];
+                  };
+              }
+      */
         ///////////////
 
 
@@ -279,6 +290,13 @@
                     fileDigits.value = fileDigits.value + instValue;
 
                 }
+
+                var appUser = document.getElementById("appUserName")
+                var appUserID = document.getElementById("appUserID")
+
+                appUser.value = @UserManager.GetUserName(User);
+                appUserID.value = @UserManager.GetUserId(User);
+
 
                 document.getElementById("actual-submit").click();
             };
