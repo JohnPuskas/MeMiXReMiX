@@ -11,5 +11,7 @@ namespace MeMiXReMiX.Models
         public ApplicationUser() : base() { }
 
         public string DisplayName { get; set; }
+
+        public IList<Song> Songs { get; set; }
     }
 }

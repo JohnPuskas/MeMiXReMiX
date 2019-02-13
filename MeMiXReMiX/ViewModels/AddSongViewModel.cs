@@ -14,5 +14,7 @@ namespace MeMiXReMiX.ViewModels
 
         public string FilePointer { get; set; }
 
+
+
     }    
 }

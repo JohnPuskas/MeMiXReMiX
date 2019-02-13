@@ -10,5 +10,9 @@ namespace MeMiXReMiX.Models
         public int ID { get; set; }
         public string Title { get; set; }
         public string FilePointer { get; set; }
+
+        public ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserID { get; set; }
+        public string ApplicationUserUserName { get; set; }
     }
 }
