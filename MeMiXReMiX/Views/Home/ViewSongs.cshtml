@@ -12,6 +12,7 @@
     {
         <li class="songs" value="42">
             <p>@song.Title</p>
+            <p>by @song.ApplicationUserUserName</p>
             <button class="play"  onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
             <button class="stop" id="@song.ID" disabled>Stop</button>
         </li>
