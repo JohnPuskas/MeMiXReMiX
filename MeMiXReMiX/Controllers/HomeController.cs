@@ -50,10 +50,29 @@ namespace MeMiXReMiX.Controllers
                 context.Songs.Add(newSong);
                 context.SaveChanges();
 
-                return Redirect("/Home/ViewSongs");
+                return Redirect(string.Format("/Home/ViewUserSongs?={0}", addSongViewModel.ApplicationsUserUserName));
             }
 
             return View(addSongViewModel);
+        }
+
+        [Authorize]
+        public IActionResult ViewUserSongs(string userName)
+        {
+            string CurrentUser = userName;
+            List<Song> AllSongs = context.Songs.ToList();
+
+            var querySongs = from s in AllSongs where s.ApplicationUserUserName == CurrentUser
+            select s;           
+            
+            /* List<Song> Songs = context.Songs.Any(s => s.ApplicationUserUserName == userName).ToList()*/;
+            ViewUserSongsViewModel viewModel = new ViewUserSongsViewModel
+            {
+                Songs = querySongs,
+                ApplicationUserUserName = CurrentUser
+            };
+
+            return View(viewModel);
         }
 
         [Authorize]
