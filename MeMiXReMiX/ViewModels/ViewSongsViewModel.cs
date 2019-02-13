@@ -8,6 +8,6 @@ namespace MeMiXReMiX.ViewModels
 {
     public class ViewSongsViewModel
     {
-        public Song Song { get; set; }
+        public IEnumerable<Song> Songs { get; set; }
     }
 }

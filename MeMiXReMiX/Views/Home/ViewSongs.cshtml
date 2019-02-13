@@ -1,18 +1,18 @@
-﻿@model IList<MeMiXReMiX.Models.Song>
+﻿@model IEnumerable<MeMiXReMiX.Models.Song>
 
 
 @{
-    ViewData["Title"] = "Saved Songs";
+    ViewData["Title"] = ViewBag.Title;
 }
 
-<h1>Saved Songs</h1>
+<h1>@ViewBag.Title</h1>
 
 <ul>
     @foreach (var song in Model)
     {
         <li class="songs" value="42">
             <p>@song.Title</p>
-            <p>by @song.ApplicationUserUserName</p>
+            <p>created by <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@song.ApplicationUserUserName>@song.ApplicationUserUserName</a></p>
             <button class="play"  onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
             <button class="stop" id="@song.ID" disabled>Stop</button>
         </li>

@@ -76,11 +76,24 @@ namespace MeMiXReMiX.Controllers
         }
 
         [Authorize]
-        public IActionResult ViewSongs()
+        public IActionResult ViewSongs(string userName)
         {
-            List<Song> songs = context.Songs.ToList();
+            IEnumerable<Song> AllSongs = context.Songs;
 
-            return View(songs);
+            if (userName == null)
+            {
+                ViewBag.Title = "All Songs";
+                return View(AllSongs);
+            }
+            else
+            {
+                ViewBag.Title = (userName + "'s songs");
+
+                var querySongs = from s in AllSongs where s.ApplicationUserUserName == userName
+                select s;
+
+                return View(querySongs);
+            }
         }
 
         public IActionResult Privacy()
