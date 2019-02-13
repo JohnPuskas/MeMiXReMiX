@@ -118,11 +118,11 @@
             <span asp-validation-for="FilePointer"></span>
         </div>
         <div class="form-group">
-            <input id="appUserName" class="form-control" type="hidden" asp-for="ApplicationsUserUserName" />
+            <input id="appUserName" class="form-control" type="hidden" asp-for="ApplicationsUserUserName" value="@UserManager.GetUserName(User)" />
             <span asp-validation-for="ApplicationsUserUserName"></span>
         </div>
         <div class="form-group">
-            <input id="appUserID" class="form-control" type="hidden" asp-for="ApplicationUserID" />
+            <input id="appUserID" class="form-control" type="hidden" asp-for="ApplicationUserID"  value="@UserManager.GetUserId(User)" />
             <span asp-validation-for="ApplicationUserID"></span>
         </div>
 
@@ -291,11 +291,11 @@
 
                 }
 
-                var appUser = document.getElementById("appUserName")
+                @*var appUser = document.getElementById("appUserName")
                 var appUserID = document.getElementById("appUserID")
 
                 appUser.value = @UserManager.GetUserName(User);
-                appUserID.value = @UserManager.GetUserId(User);
+                appUserID.value = @UserManager.GetUserId(User);*@
 
 
                 document.getElementById("actual-submit").click();
