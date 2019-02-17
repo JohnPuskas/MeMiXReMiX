@@ -192,43 +192,6 @@
             };
         }
 
-
-        // Gets the appropriate file based on the number associated with the instrument type and
-        // the number associated with the audio clip selected by the user for that instrument type.
-        /*function fileRetriever(instrumentNumber, pickNumber) {
-
-            var fileURL = inst[instrumentNumber] + pickNumber + ".mp3";
-
-            caseNumber = instrumentNumber + 1;
-
-            var getAudio = new XMLHttpRequest();
-            getAudio.open("GET", fileURL, true);
-            getAudio.responseType = "arraybuffer";
-            getAudio.onload = function () {
-                audioCtx.decodeAudioData(getAudio.response, function (buffer) {
-                    switch (caseNumber) {
-                        case 1:
-                            inst1 = buffer;
-                            break;
-                        case 2:
-                            inst2 = buffer;
-                            break;
-                        case 3:
-                            inst3 = buffer;
-                            break;
-                        case 4:
-                            inst4 = buffer;
-                            break;
-                        case 5:
-                            inst5 = buffer;
-                    }
-                });
-            };
-            getAudio.send();
-
-        };
-        */
-
         /*
         Uses function parameters to create the appropriate mp3 URL, then get the file for playback.
         Then stores the buffer in a dictionary which can be accessed when the play buttons are clicked.
@@ -252,70 +215,6 @@
                 buffers[mp3Url] = buffer;
             }
         }
-
-        /*
-        var playButton = document.getElementById("play-song")
-
-        playButton.addEventListener('click', function () {
-
-            var playTrack = audioCtx.createBufferSource();
-            playTrack.buffer = inst1;
-            playTrack.connect(audioCtx.destination);
-            playTrack.loop = true;
-            playTrack.start(0);
-
-            var playTrack2 = audioCtx.createBufferSource();
-            playTrack2.buffer = inst2;
-            playTrack2.connect(audioCtx.destination);
-            playTrack2.loop = true;
-            playTrack2.start(0);
-
-            var playTrack3 = audioCtx.createBufferSource();
-            playTrack3.buffer = inst3;
-            playTrack3.connect(audioCtx.destination);
-            playTrack3.loop = true;
-            playTrack3.start(0);
-
-            var playTrack4 = audioCtx.createBufferSource();
-            playTrack4.buffer = inst4;
-            playTrack4.connect(audioCtx.destination);
-            playTrack4.loop = true;
-            playTrack4.start(0);
-
-            playButton.disabled = true;
-
-
-            var stopButton = document.getElementById("stop-song");
-            stopButton.disabled = false;
-
-            stopButton.addEventListener('click', function () {
-                playTrack.stop();
-                playTrack2.stop();
-                playTrack3.stop();
-                playTrack4.stop();
-
-                playButton.disabled = false;
-                stopButton.disabled = true;
-            });
-
-        });
-        */
-
-        // TODO fix bug that removes selections from drop-downs upon 'submit' error (Even though the selections are still ready for submission)
-        /*      window.onload = retainSelections();
-
-              function retainSelections() {
-                  var fileDigits = document.getElementById("digits");
-                  var insts = document.getElementsByClassName("selectors");
-
-                  for (i = 1; i < fileDigits.length; i++) {
-                      inst = insts[i - 1];
-                      inst.value = fileDigits[i];
-                  };
-              }
-      */
-        ///////////////
-
 
         /*
          Upon clicking 'submit', takes all of the numerical values of User selections and
