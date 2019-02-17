@@ -92,10 +92,7 @@
         </tr>
         <tr>
             <td>
-                <button type="button" id="play-song" data-playing="false" aria-checked="false">Play Your Song</button>
-            </td>
-            <td>
-                <button id="stop-song" onlick="stopSong()" data-playing="true" aria-checked="true" type="button" disabled>Make it Stop!!!</button>
+                <button id="stop-song" onclick="stopAllTracks()" data-playing="true" aria-checked="true" type="button" >Make it Stop!!!</button>
             </td>
         </tr>
     </table>
@@ -184,6 +181,14 @@
 
                 playingSelection = audioSource;
                 currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
+            };
+        }
+
+        function stopAllTracks() {
+            for (var key in currentlyPlayingInstruments) {
+                currentlyPlayingInstruments[key].stop();
+
+                offset = 0;
             };
         }
 
