@@ -160,7 +160,9 @@
 
             if (offset == 0) {
                 audioSource.start(0);
-                offset = audioCtx.currentTime;
+                var trackLength = playBuffer.duration;
+
+                offset = audioCtx.currentTime % trackLength;
 
                 playingSelection = audioSource;
                 var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
@@ -176,7 +178,14 @@
                     currentInstrumentAudio.stop();
                 };
 
-                var startTime = audioCtx.currentTime - offset;
+                var trackLength = playBuffer.duration;
+
+                if (audioCtx.currentTime < trackLength) {
+                    var startTime = audioCtx.currentTime - offset;
+                } else {
+                    var loopPosition = audioCtx.currentTime % trackLength;
+                    var startTime = loopPosition - offset;
+                }
                 audioSource.start(audioCtx.currentTime, startTime);
 
                 playingSelection = audioSource;
