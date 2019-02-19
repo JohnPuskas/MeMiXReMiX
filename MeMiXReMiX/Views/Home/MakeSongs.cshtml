@@ -151,10 +151,9 @@
             audioSource.loop = true;
 
             if (offset == 0) {
-                audioSource.start(0);
-                var trackLength = playBuffer.duration;
+                audioSource.start(0);              
 
-                offset = audioCtx.currentTime % trackLength;
+                offset = audioCtx.currentTime;
 
                 playingSelection = audioSource;
                 var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
@@ -170,15 +169,10 @@
                     currentInstrumentAudio.stop();
                 };
 
-                var trackLength = playBuffer.duration;
-
-                if (audioCtx.currentTime < trackLength) {
-                    var startingPlace = audioCtx.currentTime - offset;
-                } else {
-                    var loopPosition = audioCtx.currentTime % trackLength;
-                    var startingPlace = loopPosition - offset; //HERE
-                }
-                audioSource.start(audioCtx.currentTime, startingPlace);
+                var trackLength = playBuffer.duration;               
+                var startingPlace = (audioCtx.currentTime - offset) % trackLength;
+                
+                audioSource.start(audioCtx.currentTime, startingPlace); 
 
                 playingSelection = audioSource;
                 currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
