@@ -21,10 +21,10 @@ namespace MeMiXReMiX.Controllers
             context = dbContext;
         }
 
-
+        [Authorize]
         public IActionResult Index()
         {
-            return View();
+            return View("MakeSongs");
         }
 
         [Authorize]

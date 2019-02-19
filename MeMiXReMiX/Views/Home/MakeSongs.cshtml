@@ -2,16 +2,8 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>MeMiX ReMiX</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-</head>
 
-<body>
     <h1>MeMiX ReMiX</h1>
 
     <p> <h5>HOW IT WORKS:</h5></p>
@@ -181,12 +173,12 @@
                 var trackLength = playBuffer.duration;
 
                 if (audioCtx.currentTime < trackLength) {
-                    var startTime = audioCtx.currentTime - offset;
+                    var startingPlace = audioCtx.currentTime - offset;
                 } else {
                     var loopPosition = audioCtx.currentTime % trackLength;
-                    var startTime = loopPosition - offset;
+                    var startingPlace = loopPosition - offset; //HERE
                 }
-                audioSource.start(audioCtx.currentTime, startTime);
+                audioSource.start(audioCtx.currentTime, startingPlace);
 
                 playingSelection = audioSource;
                 currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
@@ -254,6 +246,3 @@
         }
 
     </script>
-
-</body>
-</html>

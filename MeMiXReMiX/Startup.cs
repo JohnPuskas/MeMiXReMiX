@@ -68,7 +68,7 @@ namespace MeMiXReMiX
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=MakeSongs}/{id?}");
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
