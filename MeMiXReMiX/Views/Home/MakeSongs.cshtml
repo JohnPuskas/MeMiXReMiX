@@ -16,42 +16,10 @@
     <table>
         <tr>
             <td>
-                <p>Bass</p>
+                <p>Drums</p>
             </td>
             <td>
-                <select id="bass-select" class="selectors" onchange="javascript: getMp3(0, 'bass-select');">
-                    <option value="0">--</option>
-                    <option value="1">Bass1</option>
-                    <option value="2">Bass2</option>
-                    <option value="3">Bass3</option>
-                    <option value="4">Bass4</option>
-                </select>
-            </td>
-            <td>
-                <button onclick="javascript: playInstrument(0, 'bass-select');" type="button">Play Bass</button>
-            </td>
-        </tr>
-        <tr>
-            <td><p>Synth</p></td>
-            <td>
-                <select id="synth-select" class="selectors" onchange="javascript: getMp3(1, 'synth-select');">
-                    <option value="0">--</option>
-                    <option value="1">Synth1</option>
-                    <option value="2">Synth2</option>
-                    <option value="3">Synth3</option>
-                    <option value="4">Synth4</option>
-                    <option value="5">Synth5</option>
-
-                </select>
-            </td>
-            <td>
-                <button onclick="javascript: playInstrument(1, 'synth-select');" type="button">Play Synth</button>
-            </td>
-        </tr>
-        <tr>
-            <td><p>Drums</p></td>
-            <td>
-                <select id="drums-select" class="selectors" onchange="javascript: getMp3(2, 'drums-select');">
+                <select id="drums-select" class="selectors" onchange="javascript: getMp3(0, 'drums-select');">
                     <option value="0">--</option>
                     <option value="1">Drums1</option>
                     <option value="2">Drums2</option>
@@ -59,27 +27,68 @@
                     <option value="4">Drums4</option>
                     <option value="5">Drums5</option>
                     <option value="6">Drums6</option>
-
+                    <option value="7">Drums7</option>
+                    <option value="8">Drums8</option>
                 </select>
             </td>
             <td>
-                <button onclick="javascript: playInstrument(2, 'drums-select');" type="button">Play Drums</button>
+                <button onclick="javascript: playInstrument(0, 'drums-select');" type="button">Play Drums</button>
+            </td>
+        </tr>
+        <tr>
+            <td><p>Bass</p></td>
+            <td>
+                <select id="bass-select" class="selectors" onchange="javascript: getMp3(1, 'bass-select');">
+                    <option value="0">--</option>
+                    <option value="1">Bass1</option>
+                    <option value="2">Bass2</option>
+                    <option value="3">Bass3</option>
+                    <option value="4">Bass4</option>
+                    <option value="5">Bass5</option>
+                    <option value="6">Bass6</option>
+                    <option value="7">Bass7</option>
+                    <option value="8">Bass8</option>
+                </select>
+            </td>
+            <td>
+                <button onclick="javascript: playInstrument(1, 'bass-select');" type="button">Play Bass</button>
+            </td>
+        </tr>
+        <tr>
+            <td><p>Chords</p></td>
+            <td>
+                <select id="chords-select" class="selectors" onchange="javascript: getMp3(2, 'chords-select');">
+                    <option value="0">--</option>
+                    <option value="1">Chords1</option>
+                    <option value="2">Chords2</option>
+                    <option value="3">Chords3</option>
+                    <option value="4">Chords4</option>
+                    <option value="5">Chords5</option>
+                    <option value="6">Chords6</option>
+                    <option value="7">Chords7</option>
+                    <option value="8">Chords8</option>
+                </select>
+            </td>
+            <td>
+                <button onclick="javascript: playInstrument(2, 'chords-select');" type="button">Play Chords</button>
             </td>
         <tr>
-            <td><p>Glitch</p></td>
+            <td><p>Melodic</p></td>
             <td>
-                <select id="glitch-select" class="selectors" onchange="javascript: getMp3(3, 'glitch-select');">
+                <select id="melodic-select" class="selectors" onchange="javascript: getMp3(3, 'melodic-select');">
                     <option value="0">--</option>
-                    <option value="1">Glitch1</option>
-                    <option value="2">Glitch2</option>
-                    <option value="3">Glitch3</option>
-                    <option value="4">Glitch4</option>
-                    <option value="5">Glitch5</option>
-                    <option value="6">Glitch6</option>
+                    <option value="1">Melodic1</option>
+                    <option value="2">Melodic2</option>
+                    <option value="3">Melodic3</option>
+                    <option value="4">Melodic4</option>
+                    <option value="5">Melodic5</option>
+                    <option value="6">Melodic6</option>
+                    <option value="7">Melodic7</option>
+                    <option value="8">Melodic8</option>
                 </select>
             </td>
             <td>
-                <button onclick="javascript: playInstrument(3, 'glitch-select');" type="button">Play Glitches</button>
+                <button onclick="javascript: playInstrument(3, 'melodic-select');" type="button">Play Melodic</button>
             </td>
         </tr>
         <tr>
@@ -125,12 +134,12 @@
         let playingSelection = null;
         let currentlyPlayingInstruments = {};
 
-        var bassURLSegment = "/music/bass/bass";
-        var synthURLSegment = "/music/synth/synth";
-        var drumURLSegment = "/music/drums/drums";
-        var glitchURLSegment = "/music/glitch/glitch";
+        var drumURLSegment = "/media/music/Drums/Drums";
+        var bassURLSegment = "/media/music/Bass/Bass";
+        var chordsURLSegment = "/media/music/Chords/Chords";
+        var melodicURLSegment = "/media/music/Melodic/Melodic";
 
-        var instrumentUrlSegments = [bassURLSegment, synthURLSegment, drumURLSegment, glitchURLSegment];
+        var instrumentUrlSegments = [drumURLSegment, bassURLSegment, chordsURLSegment, melodicURLSegment];
 
 
         /*
