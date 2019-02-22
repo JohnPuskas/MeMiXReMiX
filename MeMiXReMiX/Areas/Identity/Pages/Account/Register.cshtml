@@ -32,11 +32,18 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-default">Register</button>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default">Register</button>
+            </div>
+            <div class="form-group">
+                <p>
+                    <a asp-page="./Login">Already a registered user? Go Login!</a>
+                </p>
+            </div>
         </form>
     </div>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-}
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
