@@ -11,8 +11,7 @@
     @foreach (var song in Model)
     {
         <li class="songs" value="42">
-            <p>@song.Title</p>
-            <p>created by <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@song.ApplicationUserUserName>@song.ApplicationUserUserName</a></p>
+            <p>"@song.Title", created by <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@song.ApplicationUserUserName>@song.ApplicationUserUserName</a></p>
             <button class="play"  onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
             <button class="stop" id="@song.ID" disabled>Stop</button>
         </li>
@@ -26,21 +25,14 @@
 <script type="text/javascript">
 
     var audioCtx = new AudioContext();
-    //initialize variables to be used upon play click
-    var inst1;
-    var inst2;
-    var inst3;
-    var inst4;
-    var inst5;
-    var instrument;
 
     //urls to be concatenated into full file paths/name
-    var bassURL = "/music/bass/bass";
-    var synthURL = "/music/synth/synth";
-    var drumURL = "/music/drums/drums";
-    var glitchURL = "/music/glitch/glitch";
+    var drumURLSegment = "/media/music/Drums/Drums";
+    var bassURLSegment = "/media/music/Bass/Bass";
+    var chordsURLSegment = "/media/music/Chords/Chords";
+    var melodicURLSegment = "/media/music/Melodic/Melodic";
 
-    var inst = [bassURL, synthURL, drumURL, glitchURL];
+    var instrumentUrlSegments = [drumURLSegment, bassURLSegment, chordsURLSegment, melodicURLSegment];
 
     // TODO Refactor this somehow with a loop that actually works.
     function songPlayer(filePointer, stopID) {
@@ -52,15 +44,15 @@
         var fileNum3 = fP[2];
         var fileNum4 = fP[3];
 
-        var fileURL1 = inst[0] + fileNum1 + ".mp3";
-        var fileURL2 = inst[1] + fileNum2 + ".mp3";
-        var fileURL3 = inst[2] + fileNum3 + ".mp3";
-        var fileURL4 = inst[3] + fileNum4 + ".mp3";
+        var fileURL1 = instrumentUrlSegments[0] + fileNum1 + ".mp3";
+        var fileURL2 = instrumentUrlSegments[1] + fileNum2 + ".mp3";
+        var fileURL3 = instrumentUrlSegments[2] + fileNum3 + ".mp3";
+        var fileURL4 = instrumentUrlSegments[3] + fileNum4 + ".mp3";
 
-        var instrument1;
-        var instrument2;
-        var instrument3;
-        var instrument4;
+        var newAudioBuffer1;
+        var newAudioBuffer2;
+        var newAudioBuffer3;
+        var newAudioBuffer4;
 
         stopSong = document.getElementById(stopID);
         stopSong.disabled = false;
@@ -78,10 +70,10 @@
         getAudio1.onload = function () {
             audioCtx.decodeAudioData(getAudio1.response, function (buffer) {
 
-                instrument1 = buffer;
+                newAudioBuffer1 = buffer;
 
                 var playTrack = audioCtx.createBufferSource();
-                playTrack.buffer = instrument1;
+                playTrack.buffer = newAudioBuffer1;
                 playTrack.connect(audioCtx.destination);
                 playTrack.loop = true;
                 playTrack.start(0);
@@ -109,10 +101,10 @@
             audioCtx.decodeAudioData(getAudio2.response, function (buffer) {
 
 
-                instrument2 = buffer;
+                newAudioBuffer2 = buffer;
 
                 var playTrack2 = audioCtx.createBufferSource();
-                playTrack2.buffer = instrument2;
+                playTrack2.buffer = newAudioBuffer2;
                 playTrack2.connect(audioCtx.destination);
                 playTrack2.loop = true;
                 playTrack2.start(0);
@@ -140,10 +132,10 @@
             audioCtx.decodeAudioData(getAudio3.response, function (buffer) {
 
 
-                instrument3 = buffer;
+                newAudioBuffer3 = buffer;
 
                 var playTrack3 = audioCtx.createBufferSource();
-                playTrack3.buffer = instrument3;
+                playTrack3.buffer = newAudioBuffer3;
                 playTrack3.connect(audioCtx.destination);
                 playTrack3.loop = true;
                 playTrack3.start(0);
@@ -170,10 +162,10 @@
             audioCtx.decodeAudioData(getAudio4.response, function (buffer) {
 
 
-                instrument4 = buffer;
+                newAudioBuffer4 = buffer;
 
                 var playTrack4 = audioCtx.createBufferSource();
-                playTrack4.buffer = instrument4;
+                playTrack4.buffer = newAudioBuffer4;
                 playTrack4.connect(audioCtx.destination);
                 playTrack4.loop = true;
                 playTrack4.start(0);
