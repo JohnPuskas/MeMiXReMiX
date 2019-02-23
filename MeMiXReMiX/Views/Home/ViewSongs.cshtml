@@ -1,24 +1,36 @@
-﻿@model IEnumerable<MeMiXReMiX.Models.Song>
+﻿@*@model IEnumerable<MeMiXReMiX.Models.Song>*@
+@model MeMiXReMiX.ViewModels.ViewSongsViewModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
 
 
 @{
-    ViewData["Title"] = ViewBag.Title;
+    @if (Model.ApplicationUserUserName == "")
+    {
+        ViewData["Title"] = "All Songs";
+    } else if (Model.ApplicationUserUserName == @UserManager.GetUserName(User))
+    {
+        ViewData["Title"] = "Your Songs";
+    } else
+    {
+        ViewData["Title"] = Model.ApplicationUserUserName + "'s Songs";
+    }
 }
 
-<h1>@ViewBag.Title</h1>
+<h1>@ViewData["Title"]</h1>
 
 <ul>
-    @foreach (var song in Model)
+    @foreach (var song in Model.Songs)
     {
         <li class="songs" value="42">
             <p>"@song.Title", created by <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@song.ApplicationUserUserName>@song.ApplicationUserUserName</a></p>
-            <button class="play"  onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
+            <button class="play" onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
             <button class="stop" id="@song.ID" disabled>Stop</button>
         </li>
     }
 </ul>
 
-<form asp-controller="Home" asp-action="MakeSongs" method="get">
+<form asp-controller="Home" asp-action="Index" method="get">
     <button>Go Create More Songs</button>
 </form>
 
@@ -87,7 +99,7 @@
                     for (var i = playButtons.length - 1; i >= 0; i--) {
                         playButtons[i].disabled = false;
                     };
-                    
+
                     playTrack.stop();
                 });
             });
@@ -118,7 +130,7 @@
                     for (var i = playButtons.length - 1; i >= 0; i--) {
                         playButtons[i].disabled = false;
                     };
-                    
+
                     playTrack2.stop();
                 });
             });
@@ -148,7 +160,7 @@
                     for (var i = playButtons.length - 1; i >= 0; i--) {
                         playButtons[i].disabled = false;
                     };
-                    
+
                     playTrack3.stop();
                 });
             });

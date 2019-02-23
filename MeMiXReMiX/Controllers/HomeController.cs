@@ -27,11 +27,6 @@ namespace MeMiXReMiX.Controllers
             return View("MakeSongs");
         }
 
-        [Authorize]
-        public IActionResult MakeSongs()
-        {
-            return View();
-        }
 
         [Authorize]
         [HttpPost]
@@ -50,49 +45,42 @@ namespace MeMiXReMiX.Controllers
                 context.Songs.Add(newSong);
                 context.SaveChanges();
 
-                return Redirect(string.Format("/Home/ViewUserSongs?={0}", addSongViewModel.ApplicationsUserUserName));
+                return Redirect(string.Format("/Home/ViewSongs?username={0}", addSongViewModel.ApplicationsUserUserName));
             }
 
             return View(addSongViewModel);
         }
 
-        [Authorize]
-        public IActionResult ViewUserSongs(string userName)
-        {
-            string CurrentUser = userName;
-            List<Song> AllSongs = context.Songs.ToList();
-
-            var querySongs = from s in AllSongs where s.ApplicationUserUserName == CurrentUser
-            select s;           
-            
-            /* List<Song> Songs = context.Songs.Any(s => s.ApplicationUserUserName == userName).ToList()*/;
-            ViewUserSongsViewModel viewModel = new ViewUserSongsViewModel
-            {
-                Songs = querySongs,
-                ApplicationUserUserName = CurrentUser
-            };
-
-            return View(viewModel);
-        }
 
         [Authorize]
         public IActionResult ViewSongs(string userName)
         {
+            string UserName = userName;
             IEnumerable<Song> AllSongs = context.Songs;
 
             if (userName == null)
             {
-                ViewBag.Title = "All Songs";
-                return View(AllSongs);
+                //ViewBag.Title = "All Songs";
+                ViewSongsViewModel viewModel = new ViewSongsViewModel
+                {
+                    Songs = AllSongs,
+                    ApplicationUserUserName = ""
+                };
+                return View(viewModel);
             }
             else
             {
-                ViewBag.Title = (userName + "'s songs");
+                //ViewBag.Title = (userName + "'s songs");
 
                 var querySongs = from s in AllSongs where s.ApplicationUserUserName == userName
                 select s;
 
-                return View(querySongs);
+                ViewSongsViewModel viewModel = new ViewSongsViewModel
+                {
+                    Songs = querySongs,
+                    ApplicationUserUserName = UserName
+                };
+                return View(viewModel);
             }
         }
 
