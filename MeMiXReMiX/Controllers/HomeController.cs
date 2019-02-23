@@ -60,7 +60,6 @@ namespace MeMiXReMiX.Controllers
 
             if (userName == null)
             {
-                //ViewBag.Title = "All Songs";
                 ViewSongsViewModel viewModel = new ViewSongsViewModel
                 {
                     Songs = AllSongs,
@@ -70,8 +69,6 @@ namespace MeMiXReMiX.Controllers
             }
             else
             {
-                //ViewBag.Title = (userName + "'s songs");
-
                 var querySongs = from s in AllSongs where s.ApplicationUserUserName == userName
                 select s;
 

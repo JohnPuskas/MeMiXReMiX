@@ -2,16 +2,19 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
 
-
+@{ 
+    ViewData["Title"] = "Create A Song";
+}
 
     <h1>MeMiX ReMiX</h1>
 
     <p> <h5>HOW IT WORKS:</h5></p>
     <ol>
-        <li>Make an audio clip selection for each instrument</li>
-        <li>Click 'Play your song' and you will hear your results</li>
-        <li>Repeat steps 1 & 2 you much as you like</li>
-        <li>Save it when you have created your masterpiece</li>
+        <li>Select an audio clip from any instrument category's dropdown menu</li>
+        <li>Click 'Play' for that instrument category and you will hear your selection</li>
+        <li>Selecting and playing from additional instrument categories will layer your selections together</li>
+        <li>You can change your selection for any instrument category at any time. Simply use the dropdown menu again and press play</li>
+        <li>Save your new tune once you have created your masterpiece</li>
     </ol>
     <table>
         <tr>
