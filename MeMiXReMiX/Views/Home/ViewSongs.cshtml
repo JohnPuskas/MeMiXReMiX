@@ -26,6 +26,11 @@
             <p>"@song.Title", created by <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@song.ApplicationUserUserName>@song.ApplicationUserUserName</a></p>
             <button class="play" onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
             <button class="stop" id="@song.ID" disabled>Stop</button>
+            <div id="progressBar-@song.ID" class="progress" style="width: 103px" hidden>
+                <div class="progress-bar progress-bar-striped active" style="width: 100%" >
+                    Loading...
+                </div>
+            </div>
         </li>
     }
 </ul>
@@ -61,6 +66,9 @@
         for (var i = playButtons.length - 1; i >= 0; i--) {
             playButtons[i].disabled = true;
         };
+        progressBarID = ("progressBar-" + stopID);
+        var progressBar = document.getElementById(progressBarID);
+        progressBar.hidden = false;
 
         currentAudioContextTime = audioCtx.currentTime;
 
@@ -81,7 +89,7 @@
                         audioSource.buffer = decodedBuffers[i];
                         audioSource.connect(audioCtx.destination);
                         audioSource.loop = true;
-                        audioSource.start(currentAudioContextTime + 1);
+                        audioSource.start(currentAudioContextTime + 1.5);
 
                         currentlyPlayingInstruments[currentMp3Url] = audioSource;
                     });
@@ -95,6 +103,10 @@
         function stopCurrentSong(id) {
             stopSong = document.getElementById(id);
             stopSong.disabled = false;
+
+            progressBarID = ("progressBar-" + id);
+            var progressBar = document.getElementById(progressBarID);
+            progressBar.hidden = true;
 
             stopSong.addEventListener('click', function () {
 
@@ -112,7 +124,7 @@
             });
         }
 
-        setTimeout(stopCurrentSong, 1000, stopID);
+        setTimeout(stopCurrentSong, 1500, stopID);
 
     };
 
