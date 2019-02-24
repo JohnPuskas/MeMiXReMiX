@@ -38,6 +38,11 @@
 
     var audioCtx = new AudioContext();
 
+    let mp3Urls = new Array();
+    let requestedBuffers = new Array();
+    let decodedBuffers = new Array();
+    let currentlyPlayingInstruments = {};
+
     //urls to be concatenated into full file paths/name
     var drumURLSegment = "/media/music/Drums/Drums";
     var bassURLSegment = "/media/music/Bass/Bass";
@@ -46,157 +51,81 @@
 
     var instrumentUrlSegments = [drumURLSegment, bassURLSegment, chordsURLSegment, melodicURLSegment];
 
-    // TODO Refactor this somehow with a loop that actually works.
+
     function songPlayer(filePointer, stopID) {
-
-        var fP = filePointer;
-
-        var fileNum1 = fP[0];
-        var fileNum2 = fP[1];
-        var fileNum3 = fP[2];
-        var fileNum4 = fP[3];
-
-        var fileURL1 = instrumentUrlSegments[0] + fileNum1 + ".mp3";
-        var fileURL2 = instrumentUrlSegments[1] + fileNum2 + ".mp3";
-        var fileURL3 = instrumentUrlSegments[2] + fileNum3 + ".mp3";
-        var fileURL4 = instrumentUrlSegments[3] + fileNum4 + ".mp3";
-
-        var newAudioBuffer1;
-        var newAudioBuffer2;
-        var newAudioBuffer3;
-        var newAudioBuffer4;
 
         stopSong = document.getElementById(stopID);
         stopSong.disabled = false;
 
         var playButtons = document.getElementsByClassName('play');
-
+        /*Need to decrement loop because document.getElementsByClassName yields an 
+        'array-like object' that removes any altered element from the 'array-like object'. */
         for (var i = playButtons.length - 1; i >= 0; i--) {
             playButtons[i].disabled = true;
         };
 
+        for (var i = 0; i < filePointer.length; i++) {
+            mp3Urls[i] = instrumentUrlSegments[i] + filePointer[i] + ".mp3";
 
-        var getAudio1 = new XMLHttpRequest();
-        getAudio1.open("GET", fileURL1, true);
-        getAudio1.responseType = "arraybuffer";
-        getAudio1.onload = function () {
-            audioCtx.decodeAudioData(getAudio1.response, function (buffer) {
+            (function (i) {
+                var currentMp3Url = mp3Urls[i];
 
-                newAudioBuffer1 = buffer;
+                requestedBuffers[i] = new XMLHttpRequest();
+                requestedBuffers[i].open("GET", mp3Urls[i], true);
+                requestedBuffers[i].responseType = "arraybuffer";
+                requestedBuffers[i].onload = function () {
+                    audioCtx.decodeAudioData(requestedBuffers[i].response, function (buffer) {
+                        decodedBuffers[i] = buffer;
 
-                var playTrack = audioCtx.createBufferSource();
-                playTrack.buffer = newAudioBuffer1;
-                playTrack.connect(audioCtx.destination);
-                playTrack.loop = true;
-                playTrack.start(0);
+                        var audioSource = audioCtx.createBufferSource();
+                        audioSource.buffer = decodedBuffers[i];
+                        audioSource.connect(audioCtx.destination);
+                        audioSource.loop = true;
+                        audioSource.start(0);
 
-                stopSong.addEventListener('click', function () {
+                        currentlyPlayingInstruments[currentMp3Url] = audioSource;
+                    });
+                }
+                requestedBuffers[i].send();
 
-                    stopSong.disabled = true;
+            })(i);
 
-                    var playButtons = document.getElementsByClassName('play');
-
-                    for (var i = playButtons.length - 1; i >= 0; i--) {
-                        playButtons[i].disabled = false;
-                    };
-
-                    playTrack.stop();
-                });
-            });
         };
-        getAudio1.send();
 
-        var getAudio2 = new XMLHttpRequest();
-        getAudio2.open("GET", fileURL2, true);
-        getAudio2.responseType = "arraybuffer";
-        getAudio2.onload = function () {
-            audioCtx.decodeAudioData(getAudio2.response, function (buffer) {
+        stopSong.addEventListener('click', function () {
 
+            stopSong.disabled = true;
 
-                newAudioBuffer2 = buffer;
+            var playButtons = document.getElementsByClassName('play');
 
-                var playTrack2 = audioCtx.createBufferSource();
-                playTrack2.buffer = newAudioBuffer2;
-                playTrack2.connect(audioCtx.destination);
-                playTrack2.loop = true;
-                playTrack2.start(0);
+            for (var i = playButtons.length - 1; i >= 0; i--) {
+                playButtons[i].disabled = false;
+            };
 
-                stopSong.addEventListener('click', function () {
+            for (var key in currentlyPlayingInstruments) {
+                currentlyPlayingInstruments[key].stop();
+            };            
+        });
 
-                    stopSong.disabled = true;
-
-                    var playButtons = document.getElementsByClassName('play');
-
-                    for (var i = playButtons.length - 1; i >= 0; i--) {
-                        playButtons[i].disabled = false;
-                    };
-
-                    playTrack2.stop();
-                });
-            });
-        };
-        getAudio2.send();
-
-        var getAudio3 = new XMLHttpRequest();
-        getAudio3.open("GET", fileURL3, true);
-        getAudio3.responseType = "arraybuffer";
-        getAudio3.onload = function () {
-            audioCtx.decodeAudioData(getAudio3.response, function (buffer) {
+        /*
+        function storeRequestedAudio(buffer) {
+            decodedBuffers[mp3Url] = buffer;
+        } */
 
 
-                newAudioBuffer3 = buffer;
+        /*
+        for (var h = 0; h < filePointer.length; h++) {
+            mp3Url = instrumentUrlSegments[h] + filePointer[h] + ".mp3";
 
-                var playTrack3 = audioCtx.createBufferSource();
-                playTrack3.buffer = newAudioBuffer3;
-                playTrack3.connect(audioCtx.destination);
-                playTrack3.loop = true;
-                playTrack3.start(0);
+            var audioSource = audioCtx.createBufferSource();
+            audioSource.buffer = decodedBuffers[h];
+            audioSource.connect(audioCtx.destination);
+            audioSource.loop = true;
+            audioSource.start(0);
 
-                stopSong.addEventListener('click', function () {
-                    stopSong.disabled = true;
-
-                    var playButtons = document.getElementsByClassName('play');
-
-                    for (var i = playButtons.length - 1; i >= 0; i--) {
-                        playButtons[i].disabled = false;
-                    };
-
-                    playTrack3.stop();
-                });
-            });
-        };
-        getAudio3.send();
-
-        var getAudio4 = new XMLHttpRequest();
-        getAudio4.open("GET", fileURL4, true);
-        getAudio4.responseType = "arraybuffer";
-        getAudio4.onload = function () {
-            audioCtx.decodeAudioData(getAudio4.response, function (buffer) {
-
-
-                newAudioBuffer4 = buffer;
-
-                var playTrack4 = audioCtx.createBufferSource();
-                playTrack4.buffer = newAudioBuffer4;
-                playTrack4.connect(audioCtx.destination);
-                playTrack4.loop = true;
-                playTrack4.start(0);
-
-                stopSong.addEventListener('click', function () {
-
-                    stopSong.disabled = true;
-
-                    var playButtons = document.getElementsByClassName('play');
-
-                    for (var i = playButtons.length - 1; i >= 0; i--) {
-                        playButtons[i].disabled = false;
-                    };
-
-                    playTrack4.stop();
-                });
-            });
-        };
-        getAudio4.send();
+            currentlyPlayingInstruments[mp3Url] = audioSource;
+            console.log(currentlyPlayingInstruments);
+        } */
 
     };
 
