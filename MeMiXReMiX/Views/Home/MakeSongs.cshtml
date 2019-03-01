@@ -22,7 +22,7 @@
                 <p>Drums</p>
             </td>
             <td>
-                <select id="drums-select" class="selectors" onchange="javascript: getMp3(0, 'drums-select');">
+                <select id="drums-select" class="selectors" onchange="javascript: getMp3(0, 'drums-select', 'play-drums');">
                     <option value="0">--</option>
                     <option value="1">Drums1</option>
                     <option value="2">Drums2</option>
@@ -35,13 +35,13 @@
                 </select>
             </td>
             <td>
-                <button onclick="javascript: setTimeout(playInstrument, 500, 0, 'drums-select');" type="button">Play Drums</button>
+                <button id="play-drums"  onclick="javascript: playInstrument(0, 'drums-select');" type="button" disabled>Play Drums</button>
             </td>
         </tr>
         <tr>
             <td><p>Bass</p></td>
             <td>
-                <select id="bass-select" class="selectors" onchange="javascript: getMp3(1, 'bass-select');">
+                <select id="bass-select" class="selectors" onchange="javascript: getMp3(1, 'bass-select', 'play-bass');">
                     <option value="0">--</option>
                     <option value="1">Bass1</option>
                     <option value="2">Bass2</option>
@@ -54,13 +54,13 @@
                 </select>
             </td>
             <td>
-                <button onclick="javascript: setTimeout(playInstrument, 500, 1, 'bass-select');" type="button">Play Bass</button>
+                <button id="play-bass"  onclick="javascript: playInstrument(1, 'bass-select');" type="button" disabled>Play Bass</button>
             </td>
         </tr>
         <tr>
             <td><p>Chords</p></td>
             <td>
-                <select id="chords-select" class="selectors" onchange="javascript: getMp3(2, 'chords-select');">
+                <select id="chords-select" class="selectors" onchange="javascript: getMp3(2, 'chords-select', 'play-chords');">
                     <option value="0">--</option>
                     <option value="1">Chords1</option>
                     <option value="2">Chords2</option>
@@ -73,12 +73,12 @@
                 </select>
             </td>
             <td>
-                <button onclick="javascript: setTimeout(playInstrument, 500, 2, 'chords-select');" type="button">Play Chords</button>
+                <button id="play-chords"  onclick="javascript: playInstrument(2, 'chords-select');" type="button" disabled>Play Chords</button>
             </td>
         <tr>
             <td><p>Melodic</p></td>
             <td>
-                <select id="melodic-select" class="selectors" onchange="javascript: getMp3(3, 'melodic-select');">
+                <select id="melodic-select" class="selectors" onchange="javascript: getMp3(3, 'melodic-select', 'play-melodic');">
                     <option value="0">--</option>
                     <option value="1">Melodic1</option>
                     <option value="2">Melodic2</option>
@@ -91,7 +91,7 @@
                 </select>
             </td>
             <td>
-                <button onclick="javascript: setTimeout(playInstrument, 500, 3, 'melodic-select');" type="button">Play Melodic</button>
+                <button id="play-melodic" onclick="javascript: playInstrument(3, 'melodic-select');" type="button" disabled>Play Melodic</button>
             </td>
         </tr>
         <tr>
@@ -205,21 +205,28 @@
         'instrumentNumber' is hard-coded in the HTML for each instrument type.
          'pickedFileNumber' is the int value associated with the User selection from the instrument type drop-down.
         */
-        function getMp3(instrumentNumber, elementID) {
+        function getMp3(instrumentNumber, elementID, playButtonId) {
             var e = document.getElementById(elementID);
             pickedFileNumber = e.options[e.selectedIndex].value;
             var mp3Url = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
+
+            var playButton = document.getElementById(playButtonId);
+            playButton.disabled = true;        
 
             var requestedAudio = new XMLHttpRequest();
             requestedAudio.open("GET", mp3Url, true);
             requestedAudio.responseType = "arraybuffer";
             requestedAudio.onload = function () {
                 audioCtx.decodeAudioData(requestedAudio.response, storeRequestedAudio)
+
             }
             requestedAudio.send();
 
             function storeRequestedAudio(buffer) {
                 buffers[mp3Url] = buffer;
+                playButton.disabled = false;
+
+                //playButton.disabled = false;
             }
         }
 
