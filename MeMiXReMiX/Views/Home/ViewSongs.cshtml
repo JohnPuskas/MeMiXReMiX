@@ -59,6 +59,7 @@
 
     function songPlayer(filePointer, stopID) {
 
+        var stopSong = document.getElementById(stopID);
 
         var playButtons = document.getElementsByClassName('play');
         /*Need to decrement loop because document.getElementsByClassName yields an 
@@ -70,13 +71,12 @@
         var progressBar = document.getElementById(progressBarID);
         progressBar.hidden = false;
 
-        currentAudioContextTime = audioCtx.currentTime;
+        var bufferLoadedCounter = 0;
 
         for (var i = 0; i < filePointer.length; i++) {
             mp3Urls[i] = instrumentUrlSegments[i] + filePointer[i] + ".mp3";
 
             (function (i) {
-                var currentMp3Url = mp3Urls[i];
 
                 requestedBuffers[i] = new XMLHttpRequest();
                 requestedBuffers[i].open("GET", mp3Urls[i], true);
@@ -85,47 +85,43 @@
                     audioCtx.decodeAudioData(requestedBuffers[i].response, function (buffer) {
                         decodedBuffers[i] = buffer;
 
-                        var audioSource = audioCtx.createBufferSource();
-                        audioSource.buffer = decodedBuffers[i];
-                        audioSource.connect(audioCtx.destination);
-                        audioSource.loop = true;
-                        audioSource.start(currentAudioContextTime + 1.5);
+                        bufferLoadedCounter++;
 
-                        currentlyPlayingInstruments[currentMp3Url] = audioSource;
-                    });
+                        if (bufferLoadedCounter == 4) {
+                            for (var j = 0; j < 4; j++) {
+                                var audioSource = audioCtx.createBufferSource();
+                                audioSource.buffer = decodedBuffers[j];
+                                audioSource.connect(audioCtx.destination);
+                                audioSource.loop = true;
+                                audioSource.start();
+
+                                currentlyPlayingInstruments[mp3Urls[j]] = audioSource; //need this dictionary to stop all tracks in song
+                            }
+
+                            progressBar.hidden = true;
+                            stopSong.disabled = false;
+
+                            stopSong.addEventListener('click', function () {
+
+                                stopSong.disabled = true;
+
+                                var playButtons = document.getElementsByClassName('play');
+
+                                for (var h = playButtons.length - 1; h >= 0; h--) {
+                                    playButtons[h].disabled = false;
+                                };
+
+                                for (var key in currentlyPlayingInstruments) {
+                                    currentlyPlayingInstruments[key].stop();
+                                };
+                            });
+                        }
+                    });               
                 }
                 requestedBuffers[i].send();
-
             })(i);
 
         };
-
-        function stopCurrentSong(id) {
-            stopSong = document.getElementById(id);
-            stopSong.disabled = false;
-
-            progressBarID = ("progressBar-" + id);
-            var progressBar = document.getElementById(progressBarID);
-            progressBar.hidden = true;
-
-            stopSong.addEventListener('click', function () {
-
-                stopSong.disabled = true;
-
-                var playButtons = document.getElementsByClassName('play');
-
-                for (var i = playButtons.length - 1; i >= 0; i--) {
-                    playButtons[i].disabled = false;
-                };
-
-                for (var key in currentlyPlayingInstruments) {
-                    currentlyPlayingInstruments[key].stop();
-                };
-            });
-        }
-
-        setTimeout(stopCurrentSong, 1500, stopID);
-
-    };
+    }
 
 </script>
