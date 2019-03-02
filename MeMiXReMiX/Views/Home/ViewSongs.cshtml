@@ -19,6 +19,17 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<p>
+    Sort by: 
+    @if (Model.ApplicationUserUserName == "")
+    {
+    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="name_desc">Display Name Descending ||</a>
+    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="name_asc">Display Name Ascending ||</a>
+    }
+    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="title_desc">Title Descending ||</a>
+    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="title_asc">Display Name Ascending</a>
+</p>
+
 <ul>
     @foreach (var song in Model.Songs)
     {
