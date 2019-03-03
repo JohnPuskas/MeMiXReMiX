@@ -10,5 +10,6 @@ namespace MeMiXReMiX.ViewModels
     {
         public IEnumerable<Song> Songs { get; set; }
         public string ApplicationUserUserName { get; set; }
+        public string SearchTerm { get; set; }
     }
 }

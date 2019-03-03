@@ -19,16 +19,33 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<form asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName  method="get">
+    <div class="form-group">
+        <p>
+            Search Music:
+            <input type="text" name="SearchTerm"/>
+            <input type="text" name="userName" value="@Model.ApplicationUserUserName" hidden/>
+            <input type="submit" value="Search" />
+            || <a asp-action="ViewSongs">Back to Full List of Music</a>
+        </p>
+    </div>
+</form>
+
 <p>
-    Sort by: 
+    Sort by:
     @if (Model.ApplicationUserUserName == "")
     {
-    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="name_desc">Display Name Descending ||</a>
-    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="name_asc">Display Name Ascending ||</a>
+        <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="name_asc" asp-route-searchTerm="@Model.SearchTerm">Display Name (A-Z) ||</a>
+        <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="name_desc" asp-route-searchTerm="@Model.SearchTerm">Display Name (Z-A) ||</a>
     }
-    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="title_desc">Title Descending ||</a>
-    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="title_asc">Display Name Ascending</a>
+    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="title_asc" asp-route-searchTerm="@Model.SearchTerm">Title (A-Z) ||</a>
+    <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@Model.ApplicationUserUserName asp-route-sortOrder="title_desc" asp-route-searchTerm="@Model.SearchTerm">Title (Z-A)</a>
 </p>
+
+@if (Model.Songs.Count() == 0)
+{
+    <p>No Songs to Display</p>
+}
 
 <ul>
     @foreach (var song in Model.Songs)

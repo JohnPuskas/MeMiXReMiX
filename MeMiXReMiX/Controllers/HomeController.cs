@@ -54,7 +54,7 @@ namespace MeMiXReMiX.Controllers
 
 
         [Authorize]
-        public IActionResult ViewSongs(string userName, string sortOrder)
+        public IActionResult ViewSongs(string userName, string sortOrder, string searchTerm)
         {
             string UserName = userName;
             IEnumerable<Song> AllSongs = context.Songs;
@@ -78,12 +78,19 @@ namespace MeMiXReMiX.Controllers
                     break;
             }
 
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                AllSongs = AllSongs.Where(s => s.ApplicationUserUserName.ToUpper().Contains(searchTerm.ToUpper())
+                || s.Title.ToUpper().Contains(searchTerm.ToUpper()));
+            }
+
             if (userName == null)
             {
                 ViewSongsViewModel viewModel = new ViewSongsViewModel
                 {
                     Songs = AllSongs,
-                    ApplicationUserUserName = ""
+                    ApplicationUserUserName = "",
+                    SearchTerm = searchTerm
                 };
                 return View(viewModel);
             }
@@ -95,7 +102,8 @@ namespace MeMiXReMiX.Controllers
                 ViewSongsViewModel viewModel = new ViewSongsViewModel
                 {
                     Songs = querySongs,
-                    ApplicationUserUserName = UserName
+                    ApplicationUserUserName = UserName,
+                    SearchTerm = searchTerm
                 };
                 return View(viewModel);
             }
