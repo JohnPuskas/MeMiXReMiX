@@ -9,7 +9,6 @@ using MeMiXReMiX.ViewModels;
 using MeMiXReMiX.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using MeMiXReMiX.Helpers;
 
 namespace MeMiXReMiX.Controllers
 {
@@ -54,10 +53,21 @@ namespace MeMiXReMiX.Controllers
 
 
         [Authorize]
-        public IActionResult ViewSongs(string userName, string sortOrder, string searchTerm)
+        public IActionResult ViewSongs(string userName, string sortOrder, string searchTerm, int page)
         {
             string UserName = userName;
             IEnumerable<Song> AllSongs = context.Songs;
+            int pageSize = 6;
+            
+            if (searchTerm != null)
+            {
+                page = 1;
+            }
+
+            if (!(page > 1))
+            {
+                page = 1;
+            }
 
             switch (sortOrder)
             {
@@ -85,33 +95,34 @@ namespace MeMiXReMiX.Controllers
             }
 
             if (userName == null)
-            {
+            {         
                 ViewSongsViewModel viewModel = new ViewSongsViewModel
                 {
-                    Songs = AllSongs,
-                    ApplicationUserUserName = "",
-                    SearchTerm = searchTerm
+                    Songs = AllSongs.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
+                    ApplicationUserUserName = null,
+                    SearchTerm = searchTerm,
+                    SortOrder = sortOrder,
+                    CurrentPage = page,
+                    TotalPages = (int)Math.Ceiling(AllSongs.Count() / (double)pageSize)
                 };
                 return View(viewModel);
             }
             else
             {
                 var querySongs = from s in AllSongs where s.ApplicationUserUserName == userName
-                select s;
+                select s;               
 
                 ViewSongsViewModel viewModel = new ViewSongsViewModel
                 {
-                    Songs = querySongs,
+                    Songs = querySongs.Skip((page - 1) * pageSize).Take(pageSize).ToList(),
                     ApplicationUserUserName = UserName,
-                    SearchTerm = searchTerm
+                    SearchTerm = searchTerm,
+                    SortOrder = sortOrder,
+                    CurrentPage = page,
+                    TotalPages = (int)Math.Ceiling(querySongs.Count() / (double)pageSize)
                 };
                 return View(viewModel);
             }
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -225,8 +225,6 @@
             function storeRequestedAudio(buffer) {
                 buffers[mp3Url] = buffer;
                 playButton.disabled = false;
-
-                //playButton.disabled = false;
             }
         }
 
@@ -238,7 +236,7 @@
 
             var songTitle = document.getElementById('title');
 
-            if (songTitle.value == '') {
+            if (songTitle.value.trim() == '') {
 
                 alert("Oops! Looks like your song needs a title.")
 
