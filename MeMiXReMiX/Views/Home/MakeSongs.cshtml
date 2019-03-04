@@ -35,7 +35,7 @@
                 </select>
             </td>
             <td>
-                <button id="play-drums" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(0, 'drums-select');" type="button" disabled>Play Drums</button>
+                <button id="play-drums" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(0, 'drums-select', 'play-drums');" type="button" disabled>Play Drums</button>
             </td>
         </tr>
         <tr>
@@ -54,7 +54,7 @@
                 </select>
             </td>
             <td>
-                <button id="play-bass" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(1, 'bass-select');" type="button" disabled>Play Bass</button>
+                <button id="play-bass" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(1, 'bass-select', 'play-bass');" type="button" disabled>Play Bass</button>
             </td>
         </tr>
         <tr>
@@ -73,7 +73,7 @@
                 </select>
             </td>
             <td>
-                <button id="play-chords" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(2, 'chords-select');" type="button" disabled>Play Chords</button>
+                <button id="play-chords" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(2, 'chords-select', 'play-chords');" type="button" disabled>Play Chords</button>
             </td>
         <tr>
             <td><p>MELODIC</p></td>
@@ -91,7 +91,7 @@
                 </select>
             </td>
             <td>
-                <button id="play-melodic" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(3, 'melodic-select');" type="button" disabled>Play Melodic</button>
+                <button id="play-melodic" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(3, 'melodic-select', 'play-melodic');" type="button" disabled>Play Melodic</button>
             </td>
         </tr>
         <tr>
@@ -150,8 +150,11 @@
             Stores the audioSource in a dictionary with the URL segment (that contains the instrument type) as the key.
             When User adds a new mp3 to the song, the dictionary is referenced to stop the already playing mp3 of that instrument type.
          */
-        function playInstrument(instrumentNumber, elementID) {
-            var e = document.getElementById(elementID);
+        function playInstrument(instrumentNumber, selectorID, playButtonId) {
+            var playButton = document.getElementById(playButtonId);
+            playButton.disabled = true;
+
+            var e = document.getElementById(selectorID);
             pickedFileNumber = e.options[e.selectedIndex].value;
             var playUrl = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
 
@@ -197,6 +200,15 @@
 
                 offset = 0;
             };
+
+            var playButtons = document.getElementsByClassName("play-track");
+            var selectors = document.getElementsByClassName('selectors');
+
+            for (var i = playButtons.length - 1; i >= 0; i--) {
+                if (selectors[i].value != 0) {
+                    playButtons[i].disabled = false;
+                }
+            };
         }
 
         /*
@@ -205,8 +217,8 @@
         'instrumentNumber' is hard-coded in the HTML for each instrument type.
          'pickedFileNumber' is the int value associated with the User selection from the instrument type drop-down.
         */
-        function getMp3(instrumentNumber, elementID, playButtonId) {
-            var e = document.getElementById(elementID);
+        function getMp3(instrumentNumber, selectorID, playButtonId) {
+            var e = document.getElementById(selectorID);
             pickedFileNumber = e.options[e.selectedIndex].value;
             var mp3Url = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
 
@@ -224,7 +236,10 @@
 
             function storeRequestedAudio(buffer) {
                 buffers[mp3Url] = buffer;
-                playButton.disabled = false;
+                if (pickedFileNumber != 0) {
+                    playButton.disabled = false;
+
+                }
             }
         }
 
