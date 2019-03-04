@@ -16,7 +16,7 @@
     }
 }
 
-<h1>@ViewData["Title"]</h1>
+<p><h1>@ViewData["Title"]</h1></p>
 
 <form asp-controller="Home" asp-action="ViewSongs" method="get">
     <div class="form-group">
@@ -27,13 +27,11 @@
             {
                 <input type="text" name="userName" value=@Model.ApplicationUserUserName hidden/>
             }
-            <input type="submit" value="Search" />
+            <input class="btn btn-default btn-xs" type="submit" value="Search" />
         </p>
     </div>
 </form>
-<form asp-controller="Home" asp-action="ViewSongs" method="get">
-    <button>Back to Full List of Music</button>
-</form>
+
 
 
 <p>
@@ -57,10 +55,10 @@
     {
         <li class="songs" value="42">
             <p>"@song.Title", created by <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@song.ApplicationUserUserName>@song.ApplicationUserUserName</a></p>
-            <button class="play" onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
-            <button class="stop" id="@song.ID" disabled>Stop</button>
-            <div id="progressBar-@song.ID" class="progress" style="width: 103px" hidden>
-                <div class="progress-bar progress-bar-striped active" style="width: 100%" >
+            <button class="play btn btn-sm btn-danger" onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
+            <button class="stop btn btn-sm btn-danger" id="@song.ID" disabled>Stop</button>
+            <div id="progressBar-@song.ID" class="progress" style="width: 95px" hidden>
+                <div class="progress-bar progress-bar-striped progress-bar-danger active" style="width: 100%" >
                     Loading...
                 </div>
             </div>
@@ -93,9 +91,14 @@
     <li><a asp-controller="Home" asp-action="ViewSongs" asp-route-sortOrder=@Model.SortOrder asp-route-page="@(Model.CurrentPage+1)"
     asp-route-username=@Model.ApplicationUserUserName asp-route-searchTerm=@Model.SearchTerm class="btn btn-default @nextDisabled">Next</a></li>
 </ul>
-<form asp-controller="Home" asp-action="Index" method="get">
-    <button>Go Create More Music</button>
+
+<form asp-controller="Home" asp-action="ViewSongs" method="get">
+    <button class="btn  btn-default small">Back to Full List of Music</button>
 </form>
+@*<form asp-controller="Home" asp-action="Index" method="get">
+    <button class="btn  btn-default small">Go Create More Music</button>
+</form>*@
+<
 
 <script type="text/javascript">
 

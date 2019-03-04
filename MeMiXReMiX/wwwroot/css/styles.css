@@ -1,0 +1,45 @@
+﻿body {
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-image: linear-gradient(black, darkslategray);
+}
+
+p, h1, h2, h4, h5 {
+    color: indianred;
+}
+
+h1, .memix {
+    font-family: 'Berlin Sans FB Demi';
+}
+
+a {
+    color: azure;
+}
+
+select {
+    width: 100px;
+    color: white/*indianred*/;
+    background-color: indianred/*rgb(20,0,0)*/;
+    border-color: red;
+    margin: 2px;
+}
+
+
+.play-track {
+    width: 90px;
+}
+
+label {
+    color: indianred;
+}
+
+#stop-song {
+    margin-top: 10px;
+}
+
+li {
+    color: indianred;
+}
+

@@ -6,23 +6,23 @@
     ViewData["Title"] = "Create A Song";
 }
 
-    <h1>MeMiX ReMiX</h1>
+    <p><h1>MeMiX ReMiX</h1></p>
 
     <p> <h5>HOW IT WORKS:</h5></p>
     <ol>
-        <li>Select an audio clip from any instrument category's dropdown menu</li>
-        <li>Click 'Play' for that instrument category and you will hear your selection</li>
-        <li>Selecting and playing from additional instrument categories will layer your selections together</li>
-        <li>You can change your selection for any instrument category at any time. Simply use the dropdown menu again and press play</li>
-        <li>Save your new tune once you have created your masterpiece</li>
+        <li><p>Select an audio clip from any instrument category's dropdown menu</p></li>
+        <li><p>Click 'Play' for that instrument category and you will hear your selection</p></li>
+        <li><p>Selecting and playing from additional instrument categories will layer your selections together</p></li>
+        <li><p>You can change your selection for any instrument category at any time. Simply use the dropdown menu again and press play</p></li>
+        <li><p>Save your new tune once you have created your masterpiece</p></li>
     </ol>
     <table>
         <tr>
             <td>
-                <p>Drums</p>
+                <p>DRUMS</p>
             </td>
             <td>
-                <select id="drums-select" class="selectors" onchange="javascript: getMp3(0, 'drums-select', 'play-drums');">
+                <select id="drums-select" class="selectors btn-sm" onchange="javascript: getMp3(0, 'drums-select', 'play-drums');">
                     <option value="0">--</option>
                     <option value="1">Drums1</option>
                     <option value="2">Drums2</option>
@@ -35,13 +35,13 @@
                 </select>
             </td>
             <td>
-                <button id="play-drums"  onclick="javascript: playInstrument(0, 'drums-select');" type="button" disabled>Play Drums</button>
+                <button id="play-drums" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(0, 'drums-select');" type="button" disabled>Play Drums</button>
             </td>
         </tr>
         <tr>
-            <td><p>Bass</p></td>
+            <td><p>BASS</p></td>
             <td>
-                <select id="bass-select" class="selectors" onchange="javascript: getMp3(1, 'bass-select', 'play-bass');">
+                <select id="bass-select" class="selectors btn-sm" onchange="javascript: getMp3(1, 'bass-select', 'play-bass');">
                     <option value="0">--</option>
                     <option value="1">Bass1</option>
                     <option value="2">Bass2</option>
@@ -54,13 +54,13 @@
                 </select>
             </td>
             <td>
-                <button id="play-bass"  onclick="javascript: playInstrument(1, 'bass-select');" type="button" disabled>Play Bass</button>
+                <button id="play-bass" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(1, 'bass-select');" type="button" disabled>Play Bass</button>
             </td>
         </tr>
         <tr>
-            <td><p>Chords</p></td>
+            <td><p>CHORDS</p></td>
             <td>
-                <select id="chords-select" class="selectors" onchange="javascript: getMp3(2, 'chords-select', 'play-chords');">
+                <select id="chords-select" class="selectors btn-sm" onchange="javascript: getMp3(2, 'chords-select', 'play-chords');">
                     <option value="0">--</option>
                     <option value="1">Chords1</option>
                     <option value="2">Chords2</option>
@@ -73,12 +73,12 @@
                 </select>
             </td>
             <td>
-                <button id="play-chords"  onclick="javascript: playInstrument(2, 'chords-select');" type="button" disabled>Play Chords</button>
+                <button id="play-chords" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(2, 'chords-select');" type="button" disabled>Play Chords</button>
             </td>
         <tr>
-            <td><p>Melodic</p></td>
+            <td><p>MELODIC</p></td>
             <td>
-                <select id="melodic-select" class="selectors" onchange="javascript: getMp3(3, 'melodic-select', 'play-melodic');">
+                <select id="melodic-select" class="selectors btn-sm" onchange="javascript: getMp3(3, 'melodic-select', 'play-melodic');">
                     <option value="0">--</option>
                     <option value="1">Melodic1</option>
                     <option value="2">Melodic2</option>
@@ -91,12 +91,12 @@
                 </select>
             </td>
             <td>
-                <button id="play-melodic" onclick="javascript: playInstrument(3, 'melodic-select');" type="button" disabled>Play Melodic</button>
+                <button id="play-melodic" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(3, 'melodic-select');" type="button" disabled>Play Melodic</button>
             </td>
         </tr>
         <tr>
             <td>
-                <button id="stop-song" onclick="stopAllTracks()" data-playing="true" aria-checked="true" type="button" >Make it Stop!!!</button>
+                <button id="stop-song" class="btn btn-default" onclick="stopAllTracks()" data-playing="true" aria-checked="true" type="button" >Make it Stop!!!</button>
             </td>
         </tr>
     </table>
@@ -105,8 +105,8 @@
 
     <form asp-controller="Home" asp-action="MakeSongs" method="post">
         <div class="form-group">
-            <label asp-for="Title"></label>
-            <input id="title" class="form-control" asp-for="Title" />
+            @*<label asp-for="Title"></label>*@
+            <input id="title" class="form-control" asp-for="Title" style="width: 450px"/>
             <span asp-validation-for="Title"></span>
         </div>
         <div class="form-group">
@@ -125,7 +125,7 @@
         <input id="actual-submit" type="submit" hidden="hidden">
     </form>
 
-    <button id="fake-submit" onclick="javascript: collectSelections();">Save it!!!</button>
+    <button id="fake-submit" class="btn btn-default" onclick="javascript: collectSelections();">Save it!!!</button>
 
 
     <script type="text/javascript">

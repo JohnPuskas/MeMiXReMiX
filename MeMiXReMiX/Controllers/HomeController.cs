@@ -57,7 +57,7 @@ namespace MeMiXReMiX.Controllers
         {
             string UserName = userName;
             IEnumerable<Song> AllSongs = context.Songs;
-            int pageSize = 6;
+            int pageSize = 5;
             
             if (searchTerm != null)
             {
