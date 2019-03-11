@@ -2,273 +2,274 @@
 @using Microsoft.AspNetCore.Identity
 @inject UserManager<ApplicationUser> UserManager
 
-@{ 
+@{
     ViewData["Title"] = "Create A Song";
 }
 
-    <p><h1>MeMiX ReMiX</h1></p>
+<p><h1 id="memix-remix" class="centered-text">MeMiX ReMiX</h1></p>
 
-    <p> <h5>HOW IT WORKS:</h5></p>
-    <ol>
-        <li><p>Select an audio clip from any instrument category's dropdown menu</p></li>
-        <li><p>Click 'Play' for that instrument category and you will hear your selection</p></li>
-        <li><p>Selecting and playing from additional instrument categories will layer your selections together</p></li>
-        <li><p>You can change your selection for any instrument category at any time. Simply use the dropdown menu again and press play</p></li>
-        <li><p>Save your new tune once you have created your masterpiece</p></li>
-    </ol>
-    <table>
-        <tr>
-            <td>
-                <p>DRUMS</p>
-            </td>
-            <td>
-                <select id="drums-select" class="selectors btn-sm" onchange="javascript: getMp3(0, 'drums-select', 'play-drums');">
-                    <option value="0">--</option>
-                    <option value="1">Drums1</option>
-                    <option value="2">Drums2</option>
-                    <option value="3">Drums3</option>
-                    <option value="4">Drums4</option>
-                    <option value="5">Drums5</option>
-                    <option value="6">Drums6</option>
-                    <option value="7">Drums7</option>
-                    <option value="8">Drums8</option>
-                </select>
-            </td>
-            <td>
-                <button id="play-drums" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(0, 'drums-select', 'play-drums');" type="button" disabled>Play Drums</button>
-            </td>
-        </tr>
-        <tr>
-            <td><p>BASS</p></td>
-            <td>
-                <select id="bass-select" class="selectors btn-sm" onchange="javascript: getMp3(1, 'bass-select', 'play-bass');">
-                    <option value="0">--</option>
-                    <option value="1">Bass1</option>
-                    <option value="2">Bass2</option>
-                    <option value="3">Bass3</option>
-                    <option value="4">Bass4</option>
-                    <option value="5">Bass5</option>
-                    <option value="6">Bass6</option>
-                    <option value="7">Bass7</option>
-                    <option value="8">Bass8</option>
-                </select>
-            </td>
-            <td>
-                <button id="play-bass" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(1, 'bass-select', 'play-bass');" type="button" disabled>Play Bass</button>
-            </td>
-        </tr>
-        <tr>
-            <td><p>CHORDS</p></td>
-            <td>
-                <select id="chords-select" class="selectors btn-sm" onchange="javascript: getMp3(2, 'chords-select', 'play-chords');">
-                    <option value="0">--</option>
-                    <option value="1">Chords1</option>
-                    <option value="2">Chords2</option>
-                    <option value="3">Chords3</option>
-                    <option value="4">Chords4</option>
-                    <option value="5">Chords5</option>
-                    <option value="6">Chords6</option>
-                    <option value="7">Chords7</option>
-                    <option value="8">Chords8</option>
-                </select>
-            </td>
-            <td>
-                <button id="play-chords" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(2, 'chords-select', 'play-chords');" type="button" disabled>Play Chords</button>
-            </td>
-        <tr>
-            <td><p>MELODIC</p></td>
-            <td>
-                <select id="melodic-select" class="selectors btn-sm" onchange="javascript: getMp3(3, 'melodic-select', 'play-melodic');">
-                    <option value="0">--</option>
-                    <option value="1">Melodic1</option>
-                    <option value="2">Melodic2</option>
-                    <option value="3">Melodic3</option>
-                    <option value="4">Melodic4</option>
-                    <option value="5">Melodic5</option>
-                    <option value="6">Melodic6</option>
-                    <option value="7">Melodic7</option>
-                    <option value="8">Melodic8</option>
-                </select>
-            </td>
-            <td>
-                <button id="play-melodic" class="btn btn-sm btn-danger play-track" onclick="javascript: playInstrument(3, 'melodic-select', 'play-melodic');" type="button" disabled>Play Melodic</button>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <button id="stop-song" class="btn btn-default" onclick="stopAllTracks()" data-playing="true" aria-checked="true" type="button" >Make it Stop!!!</button>
-            </td>
-        </tr>
-    </table>
+@*<p> <h5>HOW IT WORKS:</h5></p>
+<ol>
+    <li><p>Select an audio clip from any instrument category's dropdown menu</p></li>
+    <li><p>Click 'Play' for that instrument category and you will hear your selection</p></li>
+    <li><p>Selecting and playing from additional instrument categories will layer your selections together</p></li>
+    <li><p>You can change your selection for any instrument category at any time. Simply use the dropdown menu again and press play</p></li>
+    <li><p>Save your new tune once you have created your masterpiece</p></li>
+</ol>*@
+<p><h4 class="centered-text">Make Your Mix! Turn up your volume</h4></p>
 
-    <p><h4>Like what you've made? Give it a title and save it for later!</h4></p>
+<table>
+    <tr>
+        @*<td>
+            <p>DRUMS</p>
+        </td>*@
+        <td>
+            <select id="drums-select" class="selectors btn-lg" onchange="javascript: getMp3(0, 'drums-select', 'play-drums');">
+                <option value="0">--Select--</option>
+                <option value="1">Drums1</option>
+                <option value="2">Drums2</option>
+                <option value="3">Drums3</option>
+                <option value="4">Drums4</option>
+                <option value="5">Drums5</option>
+                <option value="6">Drums6</option>
+                <option value="7">Drums7</option>
+                <option value="8">Drums8</option>
+            </select>
+        </td>
+        <td>
+            <button id="play-drums" class="btn btn-lg btn-danger play-track" onclick="javascript: playInstrument(0, 'drums-select', 'play-drums');" type="button" disabled>Play Drums</button>
+        </td>
+    </tr>
+    <tr>
+        @*<td><p>BASS</p></td>*@
+        <td>
+            <select id="bass-select" class="selectors btn-lg" onchange="javascript: getMp3(1, 'bass-select', 'play-bass');">
+                <option value="0">--Select--</option>
+                <option value="1">Bass1</option>
+                <option value="2">Bass2</option>
+                <option value="3">Bass3</option>
+                <option value="4">Bass4</option>
+                <option value="5">Bass5</option>
+                <option value="6">Bass6</option>
+                <option value="7">Bass7</option>
+                <option value="8">Bass8</option>
+            </select>
+        </td>
+        <td>
+            <button id="play-bass" class="btn btn-lg btn-danger play-track" onclick="javascript: playInstrument(1, 'bass-select', 'play-bass');" type="button" disabled>Play Bass</button>
+        </td>
+    </tr>
+    <tr>
+        @*<td><p>CHORDS</p></td>*@
+        <td>
+            <select id="chords-select" class="selectors btn-lg" onchange="javascript: getMp3(2, 'chords-select', 'play-chords');">
+                <option value="0">--Select--</option>
+                <option value="1">Chords1</option>
+                <option value="2">Chords2</option>
+                <option value="3">Chords3</option>
+                <option value="4">Chords4</option>
+                <option value="5">Chords5</option>
+                <option value="6">Chords6</option>
+                <option value="7">Chords7</option>
+                <option value="8">Chords8</option>
+            </select>
+        </td>
+        <td>
+            <button id="play-chords" class="btn btn-lg btn-danger play-track" onclick="javascript: playInstrument(2, 'chords-select', 'play-chords');" type="button" disabled>Play Chords</button>
+        </td>
+    <tr>
+        @*<td><p>MELODIC</p></td>*@
+        <td>
+            <select id="melodic-select" class="selectors btn-lg" onchange="javascript: getMp3(3, 'melodic-select', 'play-melodic');">
+                <option value="0">--Select--</option>
+                <option value="1">Melodic1</option>
+                <option value="2">Melodic2</option>
+                <option value="3">Melodic3</option>
+                <option value="4">Melodic4</option>
+                <option value="5">Melodic5</option>
+                <option value="6">Melodic6</option>
+                <option value="7">Melodic7</option>
+                <option value="8">Melodic8</option>
+            </select>
+        </td>
+        <td>
+            <button id="play-melodic" class="btn btn-lg btn-danger play-track" onclick="javascript: playInstrument(3, 'melodic-select', 'play-melodic');" type="button" disabled>Play Melodic</button>
+        </td>
+    </tr>
+</table>
 
-    <form asp-controller="Home" asp-action="MakeSongs" method="post">
-        <div class="form-group">
-            @*<label asp-for="Title"></label>*@
-            <input id="title" class="form-control" asp-for="Title" style="width: 450px"/>
-            <span asp-validation-for="Title"></span>
-        </div>
-        <div class="form-group">
-            <input id="digits" class="form-control" type="hidden" asp-for="FilePointer" />
-            <span asp-validation-for="FilePointer"></span>
-        </div>
-        <div class="form-group">
-            <input id="appUserName" class="form-control" type="hidden" asp-for="ApplicationsUserUserName" value="@UserManager.GetUserName(User)" />
-            <span asp-validation-for="ApplicationsUserUserName"></span>
-        </div>
-        <div class="form-group">
-            <input id="appUserID" class="form-control" type="hidden" asp-for="ApplicationUserID"  value="@UserManager.GetUserId(User)" />
-            <span asp-validation-for="ApplicationUserID"></span>
-        </div>
-
-        <input id="actual-submit" type="submit" hidden="hidden">
-    </form>
-
-    <button id="fake-submit" class="btn btn-default" onclick="javascript: collectSelections();">Save it!!!</button>
+<button id="stop-song" class="btn btn-default btn-lg center-block" onclick="stopAllTracks()" data-playing="true" aria-checked="true" type="button">Stop Music</button>
 
 
-    <script type="text/javascript">
-
-        var audioCtx = new AudioContext();
-
-        let buffers = {};
-        let offset = 0;
-        let playingSelection = null;
-        let currentlyPlayingInstruments = {};
-
-        var drumURLSegment = "/media/music/Drums/Drums";
-        var bassURLSegment = "/media/music/Bass/Bass";
-        var chordsURLSegment = "/media/music/Chords/Chords";
-        var melodicURLSegment = "/media/music/Melodic/Melodic";
-
-        var instrumentUrlSegments = [drumURLSegment, bassURLSegment, chordsURLSegment, melodicURLSegment];
+<p><h4  class="centered-text">Like what you've made? Give it a title and save it for later!</h4></p>
 
 
-        /*
-            Grabs the appropriate buffer from the buffers dictionary, using the URL as the Key.
-            Stores the audioSource in a dictionary with the URL segment (that contains the instrument type) as the key.
-            When User adds a new mp3 to the song, the dictionary is referenced to stop the already playing mp3 of that instrument type.
-         */
-        function playInstrument(instrumentNumber, selectorID, playButtonId) {
-            var playButton = document.getElementById(playButtonId);
-            playButton.disabled = true;
+<form asp-controller="Home" asp-action="MakeSongs" method="post">
+    <div class="form-group">
+        @*<label asp-for="Title"></label>*@
+        <input id="title" class="form-control center-block" asp-for="Title" style="width: 450px" />
+        <span asp-validation-for="Title"></span>
+    </div>
+    <div class="form-group">
+        <input id="digits" class="form-control" type="hidden" asp-for="FilePointer" />
+        <span asp-validation-for="FilePointer"></span>
+    </div>
+    <div class="form-group">
+        <input id="appUserName" class="form-control" type="hidden" asp-for="ApplicationsUserUserName" value="@UserManager.GetUserName(User)" />
+        <span asp-validation-for="ApplicationsUserUserName"></span>
+    </div>
+    <div class="form-group">
+        <input id="appUserID" class="form-control" type="hidden" asp-for="ApplicationUserID" value="@UserManager.GetUserId(User)" />
+        <span asp-validation-for="ApplicationUserID"></span>
+    </div>
+    <input id="actual-submit" type="submit" hidden="hidden">
+</form>
 
-            var e = document.getElementById(selectorID);
-            pickedFileNumber = e.options[e.selectedIndex].value;
-            var playUrl = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
 
-            var playBuffer = buffers[playUrl];
+<button id="fake-submit" class="btn btn-default center-block" onclick="javascript: collectSelections();">Save it!!!</button>
 
-            var audioSource = audioCtx.createBufferSource();
-            audioSource.buffer = playBuffer;
-            audioSource.connect(audioCtx.destination);
-            audioSource.loop = true;
 
-            if (offset == 0) {
-                audioSource.start(0);              
+<script type="text/javascript">
 
-                offset = audioCtx.currentTime;
+    var audioCtx = new AudioContext();
 
-                playingSelection = audioSource;
-                var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
-                currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
+    let buffers = {};
+    let offset = 0;
+    let playingSelection = null;
+    let currentlyPlayingInstruments = {};
 
-            } else {
+    var drumURLSegment = "/media/music/Drums/Drums";
+    var bassURLSegment = "/media/music/Bass/Bass";
+    var chordsURLSegment = "/media/music/Chords/Chords";
+    var melodicURLSegment = "/media/music/Melodic/Melodic";
 
-                var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
+    var instrumentUrlSegments = [drumURLSegment, bassURLSegment, chordsURLSegment, melodicURLSegment];
 
-                if (currentlyPlayingInstruments[playingFileURLSegment]) {
 
-                    var currentInstrumentAudio = currentlyPlayingInstruments[playingFileURLSegment];
-                    currentInstrumentAudio.stop();
-                };
+    /*
+        Grabs the appropriate buffer from the buffers dictionary, using the URL as the Key.
+        Stores the audioSource in a dictionary with the URL segment (that contains the instrument type) as the key.
+        When User adds a new mp3 to the song, the dictionary is referenced to stop the already playing mp3 of that instrument type.
+     */
+    function playInstrument(instrumentNumber, selectorID, playButtonId) {
+        var playButton = document.getElementById(playButtonId);
+        playButton.disabled = true;
 
-                var trackLength = playBuffer.duration;               
-                var startingPlace = (audioCtx.currentTime - offset) % trackLength;
-                
-                audioSource.start(audioCtx.currentTime, startingPlace); 
+        var e = document.getElementById(selectorID);
+        pickedFileNumber = e.options[e.selectedIndex].value;
+        var playUrl = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
 
-                playingSelection = audioSource;
-                currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
+        var playBuffer = buffers[playUrl];
+
+        var audioSource = audioCtx.createBufferSource();
+        audioSource.buffer = playBuffer;
+        audioSource.connect(audioCtx.destination);
+        audioSource.loop = true;
+
+        if (offset == 0) {
+            audioSource.start(0);
+
+            offset = audioCtx.currentTime;
+
+            playingSelection = audioSource;
+            var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
+            currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
+
+        } else {
+
+            var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
+
+            if (currentlyPlayingInstruments[playingFileURLSegment]) {
+
+                var currentInstrumentAudio = currentlyPlayingInstruments[playingFileURLSegment];
+                currentInstrumentAudio.stop();
             };
+
+            var trackLength = playBuffer.duration;
+            var startingPlace = (audioCtx.currentTime - offset) % trackLength;
+
+            audioSource.start(audioCtx.currentTime, startingPlace);
+
+            playingSelection = audioSource;
+            currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
+        };
+    }
+
+    function stopAllTracks() {
+        for (var key in currentlyPlayingInstruments) {
+            currentlyPlayingInstruments[key].stop();
+
+            offset = 0;
+        };
+
+        var playButtons = document.getElementsByClassName("play-track");
+        var selectors = document.getElementsByClassName('selectors');
+
+        for (var i = playButtons.length - 1; i >= 0; i--) {
+            if (selectors[i].value != 0) {
+                playButtons[i].disabled = false;
+            }
+        };
+    }
+
+    /*
+    Uses function parameters to create the appropriate mp3 URL, then get the file for playback.
+    Then stores the buffer in a dictionary which can be accessed when the play buttons are clicked.
+    'instrumentNumber' is hard-coded in the HTML for each instrument type.
+     'pickedFileNumber' is the int value associated with the User selection from the instrument type drop-down.
+    */
+    function getMp3(instrumentNumber, selectorID, playButtonId) {
+        var e = document.getElementById(selectorID);
+        pickedFileNumber = e.options[e.selectedIndex].value;
+        var mp3Url = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
+
+        var playButton = document.getElementById(playButtonId);
+        playButton.disabled = true;
+
+        var requestedAudio = new XMLHttpRequest();
+        requestedAudio.open("GET", mp3Url, true);
+        requestedAudio.responseType = "arraybuffer";
+        requestedAudio.onload = function () {
+            audioCtx.decodeAudioData(requestedAudio.response, storeRequestedAudio)
+
         }
+        requestedAudio.send();
 
-        function stopAllTracks() {
-            for (var key in currentlyPlayingInstruments) {
-                currentlyPlayingInstruments[key].stop();
-
-                offset = 0;
-            };
-
-            var playButtons = document.getElementsByClassName("play-track");
-            var selectors = document.getElementsByClassName('selectors');
-
-            for (var i = playButtons.length - 1; i >= 0; i--) {
-                if (selectors[i].value != 0) {
-                    playButtons[i].disabled = false;
-                }
-            };
-        }
-
-        /*
-        Uses function parameters to create the appropriate mp3 URL, then get the file for playback.
-        Then stores the buffer in a dictionary which can be accessed when the play buttons are clicked.
-        'instrumentNumber' is hard-coded in the HTML for each instrument type.
-         'pickedFileNumber' is the int value associated with the User selection from the instrument type drop-down.
-        */
-        function getMp3(instrumentNumber, selectorID, playButtonId) {
-            var e = document.getElementById(selectorID);
-            pickedFileNumber = e.options[e.selectedIndex].value;
-            var mp3Url = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
-
-            var playButton = document.getElementById(playButtonId);
-            playButton.disabled = true;        
-
-            var requestedAudio = new XMLHttpRequest();
-            requestedAudio.open("GET", mp3Url, true);
-            requestedAudio.responseType = "arraybuffer";
-            requestedAudio.onload = function () {
-                audioCtx.decodeAudioData(requestedAudio.response, storeRequestedAudio)
+        function storeRequestedAudio(buffer) {
+            buffers[mp3Url] = buffer;
+            if (pickedFileNumber != 0) {
+                playButton.disabled = false;
 
             }
-            requestedAudio.send();
+        }
+    }
 
-            function storeRequestedAudio(buffer) {
-                buffers[mp3Url] = buffer;
-                if (pickedFileNumber != 0) {
-                    playButton.disabled = false;
+    /*
+     Upon clicking 'submit', takes all of the numerical values of User selections and
+     puts them in string to be stored in DB. THEN submits the form.
+    */
+    function collectSelections() {
 
-                }
+        var songTitle = document.getElementById('title');
+
+        if (songTitle.value.trim() == '') {
+
+            alert("Oops! Looks like your song needs a title.")
+
+        } else {
+
+            var fileDigits = document.getElementById("digits");
+            fileDigits.value = "";
+
+            var dropdownElements = document.getElementsByClassName("selectors");
+            for (i = 0; i < dropdownElements.length; i++) {
+                dropdownValue = dropdownElements[i].value;
+                fileDigits.value = fileDigits.value + dropdownValue;
+
             }
-        }
 
-        /*
-         Upon clicking 'submit', takes all of the numerical values of User selections and
-         puts them in string to be stored in DB. THEN submits the form.
-        */
-        function collectSelections() {
+            document.getElementById("actual-submit").click();
+        };
+    }
 
-            var songTitle = document.getElementById('title');
-
-            if (songTitle.value.trim() == '') {
-
-                alert("Oops! Looks like your song needs a title.")
-
-            } else {
-
-                var fileDigits = document.getElementById("digits");
-                fileDigits.value = "";
-
-                var dropdownElements = document.getElementsByClassName("selectors");
-                for (i = 0; i < dropdownElements.length; i++) {
-                    dropdownValue = dropdownElements[i].value;
-                    fileDigits.value = fileDigits.value + dropdownValue;
-
-                }
-                
-                document.getElementById("actual-submit").click();
-            };
-        }
-
-    </script>
+</script>

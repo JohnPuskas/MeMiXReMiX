@@ -19,16 +19,24 @@ a {
 }
 
 select {
-    width: 100px;
+    width: 140px;
     color: white/*indianred*/;
     background-color: indianred/*rgb(20,0,0)*/;
     border-color: red;
-    margin: 2px;
+    margin: 10px;
 }
 
 
 .play-track {
-    width: 90px;
+    width: 140px;
+}
+
+.centered-text {
+    text-align: center;
+}
+
+table {
+    margin: 0 auto;
 }
 
 label {
@@ -36,10 +44,14 @@ label {
 }
 
 #stop-song {
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 li {
     color: indianred;
+}
+
+#memix-remix {
+    margin-bottom: 30px;
 }
 
