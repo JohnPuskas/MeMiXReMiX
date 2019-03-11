@@ -268,7 +268,16 @@
 
             }
 
-            document.getElementById("actual-submit").click();
+            if (fileDigits.value.includes(0)) {
+
+                alert("Please fill your mix selections before saving.");
+
+            } else {
+
+                document.getElementById("actual-submit").click();
+
+            };
+
         };
     }
 
