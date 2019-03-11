@@ -102,7 +102,12 @@
 
 <script type="text/javascript">
 
-    var audioCtx = new AudioContext();
+    try {
+        var AudioContext = window.AudioContext || window.webkitAudioContext;
+        var audioCtx = new AudioContext();
+    } catch (e) {
+        alert("Web Audio API not supported in this browser.")
+    }
 
     let mp3Urls = new Array();
     let requestedBuffers = new Array();
@@ -119,6 +124,10 @@
 
 
     function songPlayer(filePointer, stopID) {
+
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        };
 
         var stopSong = document.getElementById(stopID);
 

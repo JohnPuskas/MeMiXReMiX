@@ -7,7 +7,7 @@
 }
 
 p, h1, h2, h4, h5 {
-    color: indianred;
+    color: #d9534f;
 }
 
 h1, .memix {
@@ -20,8 +20,8 @@ a {
 
 select {
     width: 140px;
-    color: white/*indianred*/;
-    background-color: indianred/*rgb(20,0,0)*/;
+    color: white;
+    background-color: #d9534f;
     border-color: red;
     margin: 10px;
 }
@@ -40,7 +40,7 @@ table {
 }
 
 label {
-    color: indianred;
+    color: #d9534f;
 }
 
 #stop-song {
@@ -48,10 +48,11 @@ label {
 }
 
 li {
-    color: indianred;
+    color: #d9534f;
 }
 
 #memix-remix {
     margin-bottom: 30px;
 }
+
 

@@ -131,7 +131,12 @@
 
 <script type="text/javascript">
 
-    var audioCtx = new AudioContext();
+    try {
+        var AudioContext = window.AudioContext || window.webkitAudioContext;
+        var audioCtx = new AudioContext();
+    } catch (e) {
+        alert("Web Audio API not supported in this browser.")
+    }
 
     let buffers = {};
     let offset = 0;
@@ -219,6 +224,11 @@
      'pickedFileNumber' is the int value associated with the User selection from the instrument type drop-down.
     */
     function getMp3(instrumentNumber, selectorID, playButtonId) {
+
+        if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        };
+
         var e = document.getElementById(selectorID);
         pickedFileNumber = e.options[e.selectedIndex].value;
         var mp3Url = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
