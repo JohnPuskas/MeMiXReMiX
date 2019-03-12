@@ -153,9 +153,10 @@
 
 
     /*
-        Grabs the appropriate buffer from the buffers dictionary, using the URL as the Key.
-        Stores the audioSource in a dictionary with the URL segment (that contains the instrument type) as the key.
-        When User adds a new mp3 to the song, the dictionary is referenced to stop the already playing mp3 of that instrument type.
+        Grabs the appropriate buffer from the buffers dictionary, using the full URL as the Key.
+        Stores the audioSource in currentlyPlayingInstruments with the URL segment (that contains the instrument type) as the key.
+        When User adds a new audio loop to the song, currentlyPlayingInstruments is referenced to 
+        stop the already playing audio loop of that instrument type.
      */
     function playInstrument(instrumentNumber, selectorID, playButtonId) {
         var playButton = document.getElementById(playButtonId);
