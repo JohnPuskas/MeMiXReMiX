@@ -114,7 +114,7 @@
     let decodedBuffers = new Array();
     let currentlyPlayingInstruments = {};
 
-    //urls to be concatenated into full file paths/name
+    //To be concatenated into full file paths/name
     var drumURLSegment = "/media/music/Drums/Drums";
     var bassURLSegment = "/media/music/Bass/Bass";
     var chordsURLSegment = "/media/music/Chords/Chords";
@@ -132,8 +132,8 @@
         var stopSong = document.getElementById(stopID);
 
         var playButtons = document.getElementsByClassName('play');
-        /*Need to decrement loop because document.getElementsByClassName yields an 
-        'array-like object' that removes any altered element from the 'array-like object'. */
+        /*Need to decrement loop because document.getElementsByClassName provides an
+        'array-like object' that removes any altered element itself. */
         for (var i = playButtons.length - 1; i >= 0; i--) {
             playButtons[i].disabled = true;
         };
@@ -141,11 +141,13 @@
         var progressBar = document.getElementById(progressBarID);
         progressBar.hidden = false;
 
+        // For counting the number off XHRs that have reached onload event
         var bufferLoadedCounter = 0;
 
         for (var i = 0; i < filePointer.length; i++) {
             mp3Urls[i] = instrumentUrlSegments[i] + filePointer[i] + ".mp3";
 
+            // This function captures the value of 'i' so that code following onload corresponds to right XHR
             (function (i) {
 
                 requestedBuffers[i] = new XMLHttpRequest();
@@ -157,34 +159,15 @@
 
                         bufferLoadedCounter++;
 
-                        if (bufferLoadedCounter == 4) {
-                            for (var j = 0; j < 4; j++) {
-                                var audioSource = audioCtx.createBufferSource();
-                                audioSource.buffer = decodedBuffers[j];
-                                audioSource.connect(audioCtx.destination);
-                                audioSource.loop = true;
-                                audioSource.start();
+                        // Upon all XHR reaching onload, song plays
+                        if (bufferLoadedCounter == filePointer.length) {
 
-                                currentlyPlayingInstruments[mp3Urls[j]] = audioSource; //need this dictionary to stop all tracks in song
-                            }
+                            playSong(filePointer);
 
                             progressBar.hidden = true;
                             stopSong.disabled = false;
 
-                            stopSong.addEventListener('click', function () {
-
-                                stopSong.disabled = true;
-
-                                var playButtons = document.getElementsByClassName('play');
-
-                                for (var h = playButtons.length - 1; h >= 0; h--) {
-                                    playButtons[h].disabled = false;
-                                };
-
-                                for (var key in currentlyPlayingInstruments) {
-                                    currentlyPlayingInstruments[key].stop();
-                                };
-                            });
+                            stopPlayingSong(stopSong);
                         }
                     });               
                 }
@@ -192,6 +175,36 @@
             })(i);
 
         };
+    }
+
+    function playSong(pointerForLoopLength) {
+        for (var j = 0; j < pointerForLoopLength; j++) {
+            var audioSource = audioCtx.createBufferSource();
+            audioSource.buffer = decodedBuffers[j];
+            audioSource.connect(audioCtx.destination);
+            audioSource.loop = true;
+            audioSource.start();
+
+            currentlyPlayingInstruments[mp3Urls[j]] = audioSource; //need this dictionary to stop all tracks in song
+        }
+    }
+
+    function stopPlayingSong(stopButton) {
+
+        stopButton.addEventListener('click', function () {
+
+            stopButton.disabled = true;
+
+            var playButtons = document.getElementsByClassName('play');
+
+            for (var h = playButtons.length - 1; h >= 0; h--) {
+                playButtons[h].disabled = false;
+            };
+
+            for (var key in currentlyPlayingInstruments) {
+                currentlyPlayingInstruments[key].stop();
+            };
+        });
     }
 
 </script>

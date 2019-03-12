@@ -143,6 +143,7 @@
     let playingSelection = null;
     let currentlyPlayingInstruments = {};
 
+    // To be concatenated into full file path/name
     var drumURLSegment = "/media/music/Drums/Drums";
     var bassURLSegment = "/media/music/Bass/Bass";
     var chordsURLSegment = "/media/music/Chords/Chords";
@@ -160,22 +161,27 @@
         var playButton = document.getElementById(playButtonId);
         playButton.disabled = true;
 
+        // Gets the file path/name of file that was selected by user (and thus loaded & then stored in dictionary by getMp3 function)
         var e = document.getElementById(selectorID);
         pickedFileNumber = e.options[e.selectedIndex].value;
         var playUrl = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
 
         var playBuffer = buffers[playUrl];
 
+        // Prepares AudioBuffer for playing
         var audioSource = audioCtx.createBufferSource();
         audioSource.buffer = playBuffer;
         audioSource.connect(audioCtx.destination);
         audioSource.loop = true;
 
+        // If this is the 1st track played, the offset would still be 0, so it starts at the beginning of the audio loop.
         if (offset == 0) {
             audioSource.start(0);
 
+            // Reassigns value of offset, so it can be used for calculating the starting point within subsequently played audio loops.
             offset = audioCtx.currentTime;
 
+            // Used for stopping the audio loop when another audio loop of the same instrument type is played. Or when 'Stop Music' is clicked.
             playingSelection = audioSource;
             var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
             currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
@@ -184,17 +190,20 @@
 
             var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
 
+            // Stops an audio loop from playing if it is the same instrument type as a new audio loop that is user-selected for playback 
             if (currentlyPlayingInstruments[playingFileURLSegment]) {
 
                 var currentInstrumentAudio = currentlyPlayingInstruments[playingFileURLSegment];
                 currentInstrumentAudio.stop();
             };
 
+            // Starts the audio loop synced up with the audio loops that are already playing.
             var trackLength = playBuffer.duration;
             var startingPlace = (audioCtx.currentTime - offset) % trackLength;
 
             audioSource.start(audioCtx.currentTime, startingPlace);
 
+            // Used for stopping the audio loop when another audio loop of the same instrument type is played. Or when 'Stop Music' is clicked.
             playingSelection = audioSource;
             currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
         };
@@ -210,6 +219,8 @@
         var playButtons = document.getElementsByClassName("play-track");
         var selectors = document.getElementsByClassName('selectors');
 
+        /*Need to decrement loop because document.getElementsByClassName provides an 
+        'array-like object' that removes any altered element itself. */
         for (var i = playButtons.length - 1; i >= 0; i--) {
             if (selectors[i].value != 0) {
                 playButtons[i].disabled = false;
@@ -236,6 +247,8 @@
         var playButton = document.getElementById(playButtonId);
         playButton.disabled = true;
 
+        /* XHR for retrieving data that is then decoded with the Web Audio API decodeAudioData method from an ArrayBuffer into an AudioBuffer.
+         * With the decodeAudioData method, the AudioBuffer is passed into the function that is placed as its second argument. */
         var requestedAudio = new XMLHttpRequest();
         requestedAudio.open("GET", mp3Url, true);
         requestedAudio.responseType = "arraybuffer";
@@ -245,6 +258,7 @@
         }
         requestedAudio.send();
 
+        // Store AudioBuffer in a dictionary that is accessed by the playInstrument function.    
         function storeRequestedAudio(buffer) {
             buffers[mp3Url] = buffer;
             if (pickedFileNumber != 0) {
