@@ -50,22 +50,22 @@
     <p>No Songs to Display</p>
 }
 
-<ul>
-    @foreach (var song in Model.Songs)
-    {
-        <li class="songs" value="42">
-            <p>"@song.Title", created by <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@song.ApplicationUserUserName>@song.ApplicationUserUserName</a></p>
-            <button class="play btn btn-sm btn-danger" onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
-            <button class="stop btn btn-sm btn-danger" id="@song.ID" disabled>Stop</button>
-            <div id="progressBar-@song.ID" class="progress" style="width: 95px" hidden>
-                <div class="progress-bar progress-bar-striped progress-bar-danger active" style="width: 100%" >
-                    Loading...
+    <ul>
+        @foreach (var song in Model.Songs)
+        {
+            <li class="songs" value="42">
+                <p>"@song.Title", created by <a asp-controller="Home" asp-action="ViewSongs" asp-route-username=@song.ApplicationUserUserName>@song.ApplicationUserUserName</a></p>
+                <button class="play btn btn-sm btn-danger" onclick="javascript: songPlayer('@song.FilePointer', '@song.ID');">Play</button>
+                <button class="stop btn btn-sm btn-danger" id="@song.ID" onclick="javascript: stopPlayingSong('@song.ID');" disabled>Stop</button>
+                <div id="progressBar-@song.ID" class="progress" style="width: 95px" hidden>
+                    <div class="progress-bar progress-bar-striped progress-bar-danger active" style="width: 100%">
+                        Loading...
+                    </div>
                 </div>
-            </div>
-            <p></p>
-        </li>
-    }
-</ul>
+                <p></p>
+            </li>
+        }
+    </ul>
 
 @{ 
     var previousDisabled = !Model.HasPreviousPage ? "disabled" : "";
@@ -95,116 +95,6 @@
 <form asp-controller="Home" asp-action="ViewSongs" method="get">
     <button class="btn  btn-default small">Back to Full List of Music</button>
 </form>
-@*<form asp-controller="Home" asp-action="Index" method="get">
-    <button class="btn  btn-default small">Go Create More Music</button>
-</form>*@
-<
-
-<script type="text/javascript">
-
-    try {
-        var AudioContext = window.AudioContext || window.webkitAudioContext;
-        var audioCtx = new AudioContext();
-    } catch (e) {
-        alert("Web Audio API not supported in this browser.")
-    }
-
-    let mp3Urls = new Array();
-    let requestedBuffers = new Array();
-    let decodedBuffers = new Array();
-    let currentlyPlayingInstruments = {};
-
-    //To be concatenated into full file paths/name
-    var drumURLSegment = "/media/music/Drums/Drums";
-    var bassURLSegment = "/media/music/Bass/Bass";
-    var chordsURLSegment = "/media/music/Chords/Chords";
-    var melodicURLSegment = "/media/music/Melodic/Melodic";
-
-    var instrumentUrlSegments = [drumURLSegment, bassURLSegment, chordsURLSegment, melodicURLSegment];
 
 
-    function songPlayer(filePointer, stopID) {
-
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        };
-
-        var stopSong = document.getElementById(stopID);
-
-        var playButtons = document.getElementsByClassName('play');
-        /*Need to decrement loop because document.getElementsByClassName provides an
-        'array-like object' that removes any altered element itself. */
-        for (var i = playButtons.length - 1; i >= 0; i--) {
-            playButtons[i].disabled = true;
-        };
-        progressBarID = ("progressBar-" + stopID);
-        var progressBar = document.getElementById(progressBarID);
-        progressBar.hidden = false;
-
-        // For counting the number off XHRs that have reached onload event
-        var bufferLoadedCounter = 0;
-
-        for (var i = 0; i < filePointer.length; i++) {
-            mp3Urls[i] = instrumentUrlSegments[i] + filePointer[i] + ".mp3";
-
-            // This function captures the value of 'i' so that code following onload corresponds to right XHR
-            (function (i) {
-
-                requestedBuffers[i] = new XMLHttpRequest();
-                requestedBuffers[i].open("GET", mp3Urls[i], true);
-                requestedBuffers[i].responseType = "arraybuffer";
-                requestedBuffers[i].onload = function () {
-                    audioCtx.decodeAudioData(requestedBuffers[i].response, function (buffer) {
-                        decodedBuffers[i] = buffer;
-
-                        bufferLoadedCounter++;
-
-                        // Upon all XHR reaching onload, song plays
-                        if (bufferLoadedCounter == filePointer.length) {
-
-                            playSong(filePointer);
-
-                            progressBar.hidden = true;
-                            stopSong.disabled = false;
-
-                            stopPlayingSong(stopSong);
-                        }
-                    });               
-                }
-                requestedBuffers[i].send();
-            })(i);
-
-        };
-    }
-
-    function playSong(pointerForLoopLength) {
-        for (var j = 0; j < pointerForLoopLength; j++) {
-            var audioSource = audioCtx.createBufferSource();
-            audioSource.buffer = decodedBuffers[j];
-            audioSource.connect(audioCtx.destination);
-            audioSource.loop = true;
-            audioSource.start();
-
-            currentlyPlayingInstruments[mp3Urls[j]] = audioSource; //need this dictionary to stop all tracks in song
-        }
-    }
-
-    function stopPlayingSong(stopButton) {
-
-        stopButton.addEventListener('click', function () {
-
-            stopButton.disabled = true;
-
-            var playButtons = document.getElementsByClassName('play');
-
-            for (var h = playButtons.length - 1; h >= 0; h--) {
-                playButtons[h].disabled = false;
-            };
-
-            for (var key in currentlyPlayingInstruments) {
-                currentlyPlayingInstruments[key].stop();
-            };
-        });
-    }
-
-</script>
+<script src="~/js/ViewSongs.js"></script>

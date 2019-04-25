@@ -8,21 +8,10 @@
 
 <p><h1 id="memix-remix" class="centered-text">MeMiX ReMiX</h1></p>
 
-@*<p> <h5>HOW IT WORKS:</h5></p>
-<ol>
-    <li><p>Select an audio clip from any instrument category's dropdown menu</p></li>
-    <li><p>Click 'Play' for that instrument category and you will hear your selection</p></li>
-    <li><p>Selecting and playing from additional instrument categories will layer your selections together</p></li>
-    <li><p>You can change your selection for any instrument category at any time. Simply use the dropdown menu again and press play</p></li>
-    <li><p>Save your new tune once you have created your masterpiece</p></li>
-</ol>*@
 <p><h4 class="centered-text">Make Your Mix! Turn up your volume</h4></p>
 
 <table>
     <tr>
-        @*<td>
-            <p>DRUMS</p>
-        </td>*@
         <td>
             <select id="drums-select" class="selectors btn-lg" onchange="javascript: getMp3(0, 'drums-select', 'play-drums');">
                 <option value="0">--Select--</option>
@@ -41,7 +30,6 @@
         </td>
     </tr>
     <tr>
-        @*<td><p>BASS</p></td>*@
         <td>
             <select id="bass-select" class="selectors btn-lg" onchange="javascript: getMp3(1, 'bass-select', 'play-bass');">
                 <option value="0">--Select--</option>
@@ -60,7 +48,6 @@
         </td>
     </tr>
     <tr>
-        @*<td><p>CHORDS</p></td>*@
         <td>
             <select id="chords-select" class="selectors btn-lg" onchange="javascript: getMp3(2, 'chords-select', 'play-chords');">
                 <option value="0">--Select--</option>
@@ -78,7 +65,6 @@
             <button id="play-chords" class="btn btn-lg btn-danger play-track" onclick="javascript: playInstrument(2, 'chords-select', 'play-chords');" type="button" disabled>Play Chords</button>
         </td>
     <tr>
-        @*<td><p>MELODIC</p></td>*@
         <td>
             <select id="melodic-select" class="selectors btn-lg" onchange="javascript: getMp3(3, 'melodic-select', 'play-melodic');">
                 <option value="0">--Select--</option>
@@ -106,7 +92,6 @@
 
 <form asp-controller="Home" asp-action="MakeSongs" method="post">
     <div class="form-group">
-        @*<label asp-for="Title"></label>*@
         <input id="title" class="form-control center-block" asp-for="Title" style="width: 450px" />
         <span asp-validation-for="Title"></span>
     </div>
@@ -129,180 +114,4 @@
 <button id="fake-submit" class="btn btn-default center-block" onclick="javascript: collectSelections();">Save it!!!</button>
 
 
-<script type="text/javascript">
-
-    try {
-        var AudioContext = window.AudioContext || window.webkitAudioContext;
-        var audioCtx = new AudioContext();
-    } catch (e) {
-        alert("Web Audio API not supported in this browser.")
-    }
-
-    let buffers = {};
-    let offset = 0;
-    let playingSelection = null;
-    let currentlyPlayingInstruments = {};
-
-    // To be concatenated into full file path/name
-    var drumURLSegment = "/media/music/Drums/Drums";
-    var bassURLSegment = "/media/music/Bass/Bass";
-    var chordsURLSegment = "/media/music/Chords/Chords";
-    var melodicURLSegment = "/media/music/Melodic/Melodic";
-
-    var instrumentUrlSegments = [drumURLSegment, bassURLSegment, chordsURLSegment, melodicURLSegment];
-
-
-    /*
-        Grabs the appropriate buffer from the buffers dictionary, using the URL as the Key.
-        Stores the audioSource in a dictionary with the URL segment (that contains the instrument type) as the key.
-        When User adds a new mp3 to the song, the dictionary is referenced to stop the already playing mp3 of that instrument type.
-     */
-    function playInstrument(instrumentNumber, selectorID, playButtonId) {
-        var playButton = document.getElementById(playButtonId);
-        playButton.disabled = true;
-
-        // Gets the file path/name of file that was selected by user (and thus loaded & then stored in dictionary by getMp3 function)
-        var e = document.getElementById(selectorID);
-        pickedFileNumber = e.options[e.selectedIndex].value;
-        var playUrl = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
-
-        var playBuffer = buffers[playUrl];
-
-        // Prepares AudioBuffer for playing
-        var audioSource = audioCtx.createBufferSource();
-        audioSource.buffer = playBuffer;
-        audioSource.connect(audioCtx.destination);
-        audioSource.loop = true;
-
-        // If this is the 1st track played, the offset would still be 0, so it starts at the beginning of the audio loop.
-        if (offset == 0) {
-            audioSource.start(0);
-
-            // Reassigns value of offset, so it can be used for calculating the starting point within subsequently played audio loops.
-            offset = audioCtx.currentTime;
-
-            // Used for stopping the audio loop when another audio loop of the same instrument type is played. Or when 'Stop Music' is clicked.
-            playingSelection = audioSource;
-            var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
-            currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
-
-        } else {
-
-            var playingFileURLSegment = instrumentUrlSegments[instrumentNumber];
-
-            // Stops an audio loop from playing if it is the same instrument type as a new audio loop that is user-selected for playback 
-            if (currentlyPlayingInstruments[playingFileURLSegment]) {
-
-                var currentInstrumentAudio = currentlyPlayingInstruments[playingFileURLSegment];
-                currentInstrumentAudio.stop();
-            };
-
-            // Starts the audio loop synced up with the audio loops that are already playing.
-            var trackLength = playBuffer.duration;
-            var startingPlace = (audioCtx.currentTime - offset) % trackLength;
-
-            audioSource.start(audioCtx.currentTime, startingPlace);
-
-            // Used for stopping the audio loop when another audio loop of the same instrument type is played. Or when 'Stop Music' is clicked.
-            playingSelection = audioSource;
-            currentlyPlayingInstruments[playingFileURLSegment] = playingSelection;
-        };
-    }
-
-    function stopAllTracks() {
-        for (var key in currentlyPlayingInstruments) {
-            currentlyPlayingInstruments[key].stop();
-
-            offset = 0;
-        };
-
-        var playButtons = document.getElementsByClassName("play-track");
-        var selectors = document.getElementsByClassName('selectors');
-
-        /*Need to decrement loop because document.getElementsByClassName provides an 
-        'array-like object' that removes any altered element itself. */
-        for (var i = playButtons.length - 1; i >= 0; i--) {
-            if (selectors[i].value != 0) {
-                playButtons[i].disabled = false;
-            }
-        };
-    }
-
-    /*
-    Uses function parameters to create the appropriate mp3 URL, then get the file for playback.
-    Then stores the buffer in a dictionary which can be accessed when the play buttons are clicked.
-    'instrumentNumber' is hard-coded in the HTML for each instrument type.
-     'pickedFileNumber' is the int value associated with the User selection from the instrument type drop-down.
-    */
-    function getMp3(instrumentNumber, selectorID, playButtonId) {
-
-        if (audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        };
-
-        var e = document.getElementById(selectorID);
-        pickedFileNumber = e.options[e.selectedIndex].value;
-        var mp3Url = instrumentUrlSegments[instrumentNumber] + pickedFileNumber + ".mp3";
-
-        var playButton = document.getElementById(playButtonId);
-        playButton.disabled = true;
-
-        /* XHR for retrieving data that is then decoded with the Web Audio API decodeAudioData method from an ArrayBuffer into an AudioBuffer.
-         * With the decodeAudioData method, the AudioBuffer is passed into the function that is placed as its second argument. */
-        var requestedAudio = new XMLHttpRequest();
-        requestedAudio.open("GET", mp3Url, true);
-        requestedAudio.responseType = "arraybuffer";
-        requestedAudio.onload = function () {
-            audioCtx.decodeAudioData(requestedAudio.response, storeRequestedAudio)
-
-        }
-        requestedAudio.send();
-
-        // Store AudioBuffer in a dictionary that is accessed by the playInstrument function.    
-        function storeRequestedAudio(buffer) {
-            buffers[mp3Url] = buffer;
-            if (pickedFileNumber != 0) {
-                playButton.disabled = false;
-
-            }
-        }
-    }
-
-    /*
-     Upon clicking 'submit', takes all of the numerical values of User selections and
-     puts them in string to be stored in DB. THEN submits the form.
-    */
-    function collectSelections() {
-
-        var songTitle = document.getElementById('title');
-
-        if (songTitle.value.trim() == '') {
-
-            alert("Oops! Looks like your song needs a title.")
-
-        } else {
-
-            var fileDigits = document.getElementById("digits");
-            fileDigits.value = "";
-
-            var dropdownElements = document.getElementsByClassName("selectors");
-            for (i = 0; i < dropdownElements.length; i++) {
-                dropdownValue = dropdownElements[i].value;
-                fileDigits.value = fileDigits.value + dropdownValue;
-
-            }
-
-            if (fileDigits.value.includes(0)) {
-
-                alert("Please fill your mix selections before saving.");
-
-            } else {
-
-                document.getElementById("actual-submit").click();
-
-            };
-
-        };
-    }
-
-</script>
+<script src="~/js/MakeSongs.js"></script>
